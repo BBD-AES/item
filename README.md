@@ -19,31 +19,79 @@ DB
 ```
 ### Package Structure
 ```text
-src/main/java/com/example/item
+src/main/java/com/bbd/item
+├── ItemApplication.java
+│
 ├── domain
-│   ├── model          # 도메인 모델
-│   └── exception      # 도메인 예외
+│   ├── model
+│   │   └── Item.java
+│   └── exception
+│       ├── ItemDomainException.java
+│       └── ItemOutOfStockException.java
 │
 ├── application
 │   ├── port
-│   │   ├── in         # UseCase 인터페이스
-│   │   └── out        # 외부 시스템 접근 Port
-│   ├── service        # UseCase 구현체
+│   │   ├── in
+│   │   │   ├── CreateItemUseCase.java
+│   │   │   ├── GetItemUseCase.java
+│   │   │   ├── DecreaseStockUseCase.java
+│   │   │   └── IncreaseStockUseCase.java
+│   │   │
+│   │   └── out
+│   │       ├── SaveItemPort.java
+│   │       ├── LoadItemPort.java
+│   │       └── PublishItemEventPort.java
+│   │
+│   ├── service
+│   │   └── ItemService.java
+│   │
 │   └── dto
-│       ├── command    # UseCase 입력 DTO
-│       └── result     # UseCase 결과 DTO
+│       ├── command
+│       │   ├── CreateItemCommand.java
+│       │   └── DecreaseStockCommand.java
+│       │
+│       └── result
+│           └── ItemResult.java
 │
 ├── adapter
 │   ├── in
-│   │   ├── web        # Controller
-│   │   └── kafka      # Kafka Consumer
+│   │   ├── web
+│   │   │   ├── ItemController.java
+│   │   │   └── dto
+│   │   │       ├── CreateItemRequest.java
+│   │   │       └── ItemResponse.java
+│   │   │
+│   │   └── kafka
+│   │       ├── StockEventConsumer.java
+│   │       └── dto
+│   │           └── StockDecreaseMessage.java
+│   │
 │   └── out
-│       ├── persistence # JPA 구현
-│       ├── kafka       # Kafka Producer
-│       └── redis       # Redis 구현
+│       ├── persistence
+│       │   ├── ItemJpaEntity.java
+│       │   ├── ItemJpaRepository.java
+│       │   ├── ItemPersistenceAdapter.java
+│       │   └── ItemPersistenceMapper.java
+│       │
+│       └── kafka
+│           ├── ItemKafkaProducer.java
+│           ├── ItemEventPublisherAdapter.java
+│           └── dto
+│               └── ItemStockChangedMessage.java
 │
-├── config             # 설정 클래스
-└── global             # 공통 응답, 예외 처리
+├── config
+│   ├── SwaggerConfig.java
+│   ├── JpaConfig.java
+│   └── KafkaConfig.java
+│
+└── global
+    ├── error
+    │   ├── GlobalExceptionHandler.java
+    │   ├── ApiException.java
+    │   └── ErrorResponse.java
+    │
+    └── response
+        └── ApiResponse.java
 ```
 
 ### Rule
