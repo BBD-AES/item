@@ -23,11 +23,8 @@ src/main/java/com/bbd/item
 ├── ItemApplication.java
 │
 ├── domain
-│   ├── model
-│   │   └── Item.java
-│   └── exception
-│       ├── ItemDomainException.java
-│       └── ItemOutOfStockException.java
+│   └── model
+│       └── Item.java
 │
 ├── application
 │   ├── port
