@@ -51,4 +51,4 @@ src/main/java/com/example/item
 * Application Service는 UseCase를 구현한다.
 * Service는 Repository가 아닌 Port에 의존한다.
 * JPA, Kafka, Redis 구현은 Adapter 계층에서 처리한다.
-* Domain은 Spring, JPA 등 외부 기술에 의존하지 않는다. dd
+* Domain은 Spring, JPA 등 외부 기술에 의존하지 않는다. dddd
