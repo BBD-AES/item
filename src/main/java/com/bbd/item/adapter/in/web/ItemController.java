@@ -1,12 +1,14 @@
 package com.bbd.item.adapter.in.web;
 
 import com.bbd.item.adapter.in.web.dto.CreateItemRequest;
+import com.bbd.item.adapter.in.web.dto.UpdateItemRequest;
 import com.bbd.item.adapter.in.web.dto.UpdateNameItemRequest;
 import com.bbd.item.adapter.in.web.dto.UpdatePriceItemRequest;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
+import com.bbd.item.application.port.in.dto.UpdateCommand;
 import com.bbd.item.application.port.in.dto.UpdateNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.Item;
@@ -66,6 +68,14 @@ public class ItemController {
     public ResponseEntity<Void> updatePrice(@PathVariable String sku, @RequestBody UpdatePriceItemRequest req) {
         UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand(sku, req.getUnitPrice());
         itemUseCaseUpdate.updatePrice(updatePriceCommand);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "상품 단가 및 이름 수정 (관리자만 가능 한번에)")
+    @PatchMapping("/{sku}")
+    public ResponseEntity<Void> update(@PathVariable String sku, @RequestBody UpdateItemRequest req) {
+        UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
+        itemUseCaseUpdate.update(updateCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -1,6 +1,7 @@
 package com.bbd.item.application.service;
 
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
+import com.bbd.item.application.port.in.dto.UpdateCommand;
 import com.bbd.item.application.port.in.dto.UpdateNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
@@ -51,4 +52,18 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
         itemPersistencePort.save(item);
     }
 
+    @Override
+    public void update(UpdateCommand updateCommand) {
+        // TODO : 사용자 권한에 따라서 생성 못하게 막아야함 (애초에 시큐리티단에서 1차 검증하고옴)
+
+        // 이미 존재하는지 확인
+        Item item = itemPersistencePort.findBySku(updateCommand.getSku())
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
+
+        // 존재한다면 가격 및 이름 업데이트
+        item.change(updateCommand.getName(), updateCommand.getUnitPrice());
+
+        // 저장
+        itemPersistencePort.save(item);
+    }
 }

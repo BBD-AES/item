@@ -66,6 +66,18 @@ public class Item {
         this.unitPrice = unitPrice;
     }
 
+    // 이름 및 가격 변경
+    public void change(String name, Integer unitPrice) {
+        if (name == null || name.isBlank()) {
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
+        }
+        if (unitPrice == null || unitPrice < 0) {
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
+        }
+        this.name = name;
+        this.unitPrice = unitPrice;
+    }
+
     // 판매 게시
     public void activate() {
         this.active = true;
@@ -75,5 +87,6 @@ public class Item {
     public void deactivate() {
         this.active = false;
     }
+
 
 }
