@@ -1,6 +1,7 @@
 package com.bbd.item.application.service;
 
-import com.bbd.item.application.port.in.ItemUseCase;
+
+import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
@@ -12,19 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class ItemService implements ItemUseCase {
+@Transactional
+public class ItemServiceCreateImpl implements ItemUseCaseCreate {
 
     private final ItemPersistencePort itemPersistencePort;
 
-    @Transactional
     @Override
     public void create(CreateItemCommand req) {
         // TODO : 사용자의 권한에 따라서 생성 못하게 막아야함 (나중에 유저 토큰 들어오면 하자)
 
         // 이미 존재하는지 확인
-        itemPersistencePort.findBySku(req.getSku())
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_CONFLICT));
+        if(itemPersistencePort.existBySku(req.getSku())){
+            throw new ApiException(ErrorCode.ITEM_CONFLICT);
+        }
 
         Item item = new Item(
                 req.getSku(),
@@ -39,9 +40,4 @@ public class ItemService implements ItemUseCase {
         itemPersistencePort.save(item);
     }
 
-    @Override
-    public Item getItem(String sku) {
-        return itemPersistencePort.findBySku(sku)
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_CONFLICT));
-    }
 }

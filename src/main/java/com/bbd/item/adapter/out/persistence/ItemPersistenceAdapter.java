@@ -18,6 +18,11 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
     private final ItemPersistenceMapper itemPersistenceMapper;
 
     @Override
+    public boolean existBySku(String sku) {
+        return itemJpaRepository.existsById(sku);
+    }
+
+    @Override
     public void save(Item item) {
         ItemJpaEntity itemJpaEntity = new ItemJpaEntity(
                 item.getSku(),

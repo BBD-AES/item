@@ -1,5 +1,7 @@
 package com.bbd.item.domain.model;
 
+import com.bbd.item.global.error.ApiException;
+import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.*;
 
 @Getter
@@ -32,26 +34,34 @@ public class Item {
 
     private void validate(String sku, String name, int safetyStock, int unitPrice) {
         if (sku == null || sku.isBlank()) {
-            throw new IllegalArgumentException("상품 SKU는 필수입니다.");
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
 
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("상품명은 필수입니다.");
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
 
         if (safetyStock < 0) {
-            throw new IllegalArgumentException("안전 재고는 0 이상이어야 합니다.");
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
 
         if (unitPrice < 0) {
-            throw new IllegalArgumentException("상품 가격은 0 이상이어야 합니다.");
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
+    }
+
+    // 이름 변경
+    public void changeName(String newName){
+        if (newName == null || newName.isBlank()) {
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
+        }
+        this.name = newName;
     }
 
     // 가격 변경
     public void changePrice(int unitPrice) {
         if (unitPrice < 0) {
-            throw new IllegalArgumentException("상품 가격은 0 이상이어야 합니다.");
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
         this.unitPrice = unitPrice;
     }

@@ -1,7 +1,9 @@
 package com.bbd.item.creatTest;
 
 import com.bbd.item.adapter.out.persistence.ItemJpaRepository;
-import com.bbd.item.application.port.in.ItemUseCase;
+import com.bbd.item.application.port.in.ItemUseCaseCreate;
+import com.bbd.item.application.port.in.ItemUseCaseGet;
+import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
@@ -10,20 +12,27 @@ import com.bbd.item.domain.model.Unit;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-//@Transactional
+@Transactional
 public class CreateTest1 {
 
     @Autowired
-    private ItemUseCase itemUseCase;
+    private ItemUseCaseUpdate itemUseCaseUpdate;
+
+    @Autowired
+    private ItemUseCaseGet itemUseCaseGet;
+
+    @Autowired
+    private ItemUseCaseCreate itemUseCaseCreate;
 
     @Autowired
     private javax.sql.DataSource dataSource;
@@ -34,13 +43,8 @@ public class CreateTest1 {
     @Autowired
     private ItemPersistencePort itemPersistencePort;
 
-    @Test
-    @DisplayName("Item 생성 테스트 - 예외가 없다면 성공")
-    public void test1() throws Exception {
-        System.out.println("DB URL = " + dataSource.getConnection().getMetaData().getURL());
-
-        System.out.println("DB USER = " + dataSource.getConnection().getMetaData().getUserName());
-
+    @BeforeEach
+    public void prePersist() {
         CreateItemCommand createItemCommand = new CreateItemCommand(
                 "HQ-Test",
                 "엔진",
@@ -50,7 +54,24 @@ public class CreateTest1 {
                 11900,
                 true
         );
-        itemUseCase.create(createItemCommand);
+        itemUseCaseCreate.create(createItemCommand);
+    }
+
+    @Test
+    @DisplayName("Item 생성 테스트 - 예외가 없다면 성공")
+    public void test1() throws Exception {
+        CreateItemCommand createItemCommand = new CreateItemCommand(
+                "HQ-Test",
+                "엔진",
+                Category.ENGINE_OIL,
+                Unit.EA,
+                5,
+                11900,
+                true
+        );
+        Assertions.assertThrows(ApiException.class, () -> {
+            itemUseCaseCreate.create(createItemCommand);
+        });
         System.out.println("COUNT = " + itemJpaRepository.count());
     }
 
@@ -73,7 +94,7 @@ public class CreateTest1 {
         String sku = "HQ-Test";
 
         // when
-        Item item = itemUseCase.getItem(sku);
+        Item item = itemUseCaseGet.getItem(sku);
 
         // then
         assertEquals("HQ-Test", item.getSku());
@@ -81,6 +102,36 @@ public class CreateTest1 {
         System.out.println("item.getSku() = " + item.getSku());
         System.out.println("item.getName() = " + item.getName());
         System.out.println("item.getCategory() = " + item.getCategory());
+    }
+
+    @Test
+    @DisplayName("상품 존재 여부 테스트")
+    public void test4() throws Exception {
+
+        // given
+        String sku = "HQ-Test";
+
+        // when
+        boolean check = itemPersistencePort.existBySku(sku);
+
+        // then
+        assertEquals(true, check);
+
+    }
+
+    @Test
+    @DisplayName("이름 변경 테스트")
+    public void test5() throws Exception {
+
+        // given
+        String sku = "HQ-Test";
+
+        // when
+        Item item = itemUseCaseGet.getItem(sku);
+        item.changeName("새로운이름");
+
+        // then
+        assertEquals("새로운이름", item.getName());
 
     }
 
