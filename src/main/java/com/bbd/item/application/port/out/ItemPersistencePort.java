@@ -2,6 +2,7 @@ package com.bbd.item.application.port.out;
 
 import com.bbd.item.domain.model.Item;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ItemPersistencePort {
@@ -14,5 +15,8 @@ public interface ItemPersistencePort {
 
     // SKU 로 단건 조회
     Optional<Item> findBySku(String sku);
+
+    // 전체 조회
+    List<Item> getAll();
 
 }

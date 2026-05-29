@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,4 +24,8 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
                 .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
     }
 
+    @Override
+    public List<Item> getAll() {
+        return itemPersistencePort.getAll();
+    }
 }

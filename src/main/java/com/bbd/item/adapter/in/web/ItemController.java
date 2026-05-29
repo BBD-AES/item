@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "1. ItemController")
 @RequestMapping("/api/v1/items")
 @RestController
@@ -48,13 +50,6 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "SKU 로 단건조회 API")
-    @GetMapping("/{sku}")
-    public ResponseEntity<Item> getItem(@PathVariable String sku) {
-        Item item = itemUseCaseGet.getItem(sku);
-        return ResponseEntity.status(HttpStatus.OK).body(item);
-    }
-
     @Operation(summary = "상품 이름 수정 API (관리지만 가능)")
     @PatchMapping("/{sku}/name")
     public ResponseEntity<Void> updateName(@PathVariable String sku, @RequestBody UpdateNameItemRequest req) {
@@ -77,6 +72,20 @@ public class ItemController {
         UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
         itemUseCaseUpdate.update(updateCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "SKU 로 단건조회 API")
+    @GetMapping("/{sku}")
+    public ResponseEntity<Item> getItem(@PathVariable String sku) {
+        Item item = itemUseCaseGet.getItem(sku);
+        return ResponseEntity.status(HttpStatus.OK).body(item);
+    }
+
+    @Operation(summary = "모든 아이템 리스트 조회")
+    @GetMapping("/all")
+    public ResponseEntity<List<Item>> getAllItems() {
+        List<Item> all = itemUseCaseGet.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(all);
     }
 
 

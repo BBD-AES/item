@@ -5,6 +5,7 @@ import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,4 +44,11 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
         return item;
     }
 
+    @Override
+    public List<Item> getAll() {
+        return itemJpaRepository.findAll()
+                .stream()
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
+                .toList();
+    }
 }
