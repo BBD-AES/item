@@ -8,4 +8,6 @@ public interface ItemQueryRepository {
 
     List<ItemJpaEntity> filter(GetItemFilterCommand getItemFilterCommand);
 
+    List<ItemJpaEntity> filterName(String name);
+
 }

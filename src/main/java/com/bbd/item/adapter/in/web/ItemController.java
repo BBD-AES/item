@@ -83,8 +83,8 @@ public class ItemController {
     @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
     public ResponseEntity<List<Item>> getAllItems() {
-        List<Item> all = itemUseCaseGet.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(all);
+        List<Item> items = itemUseCaseGet.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
     @Operation(summary = "필터 조회")
@@ -97,8 +97,16 @@ public class ItemController {
             @RequestParam(required = false) Integer maxPrice
             ){
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
-        List<Item> filter = itemUseCaseGet.getFilter(getItemFilterCommand);
-        return ResponseEntity.status(HttpStatus.OK).body(filter);
+        List<Item> items = itemUseCaseGet.getFilter(getItemFilterCommand);
+        return ResponseEntity.status(HttpStatus.OK).body(items);
+    }
+
+    @Operation(summary = "이름으로 조회")
+    @GetMapping("/name")
+    public ResponseEntity<List<Item>> getItemsContainsName(@RequestParam(required = false) String name){
+        GetNameCommand getNameCommand = new GetNameCommand(name);
+        List<Item> items = itemUseCaseGet.getName(getNameCommand);
+        return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
 

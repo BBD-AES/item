@@ -6,6 +6,7 @@ import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
+import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
@@ -19,6 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -89,6 +92,27 @@ public class GetTest1 {
         // then
         Assertions.assertEquals(2, filter.size());
 
+    }
+
+    @Test
+    @DisplayName("이름 포함 조회 테스트")
+    public void test3() throws Exception {
+
+        // given
+        GetNameCommand getNameCommand = new GetNameCommand("엔진");
+
+        // when
+        List<Item> items = itemUseCaseGet.getName(getNameCommand);
+
+        // then
+        assertTrue(
+                items.stream()
+                        .allMatch(item -> item.getName().contains("엔진"))
+        );
+
+        items.forEach(i -> {
+            System.out.println("i.getName() = " + i.getName());
+        });
     }
 
 

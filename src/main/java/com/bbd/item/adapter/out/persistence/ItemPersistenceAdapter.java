@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.out.persistence;
 
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
+import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,14 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
     @Override
     public List<Item> getFilter(GetItemFilterCommand getItemFilterCommand) {
         return itemJpaRepository.filter(getItemFilterCommand)
+                .stream()
+                .map(item -> itemPersistenceMapper.toDomain(item))
+                .toList();
+    }
+
+    @Override
+    public List<Item> getName(GetNameCommand getNameCommand) {
+        return itemJpaRepository.filterName(getNameCommand.getName())
                 .stream()
                 .map(item -> itemPersistenceMapper.toDomain(item))
                 .toList();
