@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.in.web.dto;
+package com.bbd.item.domain.model;
 
 
 import lombok.Getter;

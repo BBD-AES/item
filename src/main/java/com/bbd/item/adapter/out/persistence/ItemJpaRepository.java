@@ -1,4 +1,11 @@
 package com.bbd.item.adapter.out.persistence;
 
-public class ItemJpaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ItemJpaRepository extends JpaRepository<ItemJpaEntity, String> {
+
+
+
 }

@@ -1,15 +1,15 @@
-package com.bbd.item.adapter.in.web.dto;
+package com.bbd.item.application.port.in.dto;
 
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Unit;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateItemRequest {
+public class CreateItemCommand {
 
     private String sku;
 

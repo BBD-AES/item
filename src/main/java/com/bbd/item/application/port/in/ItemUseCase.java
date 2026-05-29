@@ -1,9 +1,9 @@
 package com.bbd.item.application.port.in;
 
-import com.bbd.item.adapter.in.web.dto.CreateItemRequest;
+import com.bbd.item.application.port.in.dto.CreateItemCommand;
 
 public interface ItemUseCase {
 
-    void create(CreateItemRequest req);
+    void create(CreateItemCommand req);
 
 }

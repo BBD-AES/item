@@ -1,6 +1,6 @@
 package com.bbd.item.enumText;
 
-import com.bbd.item.adapter.in.web.dto.Category;
+import com.bbd.item.domain.model.Category;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

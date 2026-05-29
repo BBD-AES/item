@@ -9,9 +9,9 @@ public class Item {
 
     private String name; // 부품 이름
 
-    private String category; // 분류
+    private Category category; // 분류
 
-    private String unit; // 개 , 박스, L 등 단위
+    private Unit unit; // 개 , 박스, L 등 단위
 
     private int safetyStock; // 결품 방지 최소 보유량
 
@@ -19,7 +19,7 @@ public class Item {
 
     private boolean active; // 활성 여부 (삭제는 없고, 비활성화로 관리)
 
-    public Item(String sku, String name, String category, String unit, int safetyStock, int unitPrice, boolean active) {
+    public Item(String sku, String name, Category category, Unit unit, int safetyStock, int unitPrice, boolean active) {
         validate(sku, name, safetyStock, unitPrice); // null 혹은 공백 값 검사
         this.sku = sku;
         this.name = name;
