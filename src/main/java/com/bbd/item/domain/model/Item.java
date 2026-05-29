@@ -5,19 +5,19 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
-    private String sku;
+    private String sku; // 부품 식별자
 
-    private String name;
+    private String name; // 부품 이름
 
-    private String category;
+    private String category; // 분류
 
-    private String unit;
+    private String unit; // 개 , 박스, L 등 단위
 
-    private int safetyStock;
+    private int safetyStock; // 결품 방지 최소 보유량
 
-    private int unitPrice;
+    private int unitPrice; // 단가 (덮어 쓰기, 변경 이력은 각 Procurement & Sales & Inventory 가 저장)
 
-    private boolean active;
+    private boolean active; // 활성 여부 (삭제는 없고, 비활성화로 관리)
 
     public Item(String sku, String name, String category, String unit, int safetyStock, int unitPrice, boolean active) {
         validate(sku, name, safetyStock, unitPrice); // null 혹은 공백 값 검사

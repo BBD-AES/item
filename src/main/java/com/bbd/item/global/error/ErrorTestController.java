@@ -1,5 +1,6 @@
 package com.bbd.item.global.error;
 
+import com.bbd.item.global.error.dto.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ public class ErrorTestController {
 
     @GetMapping
     public ResponseEntity<Void> test1(){
-        throw new ApiException(HttpStatus.NOT_FOUND, "404", "NOT_FOUND", "찾을수 없습니다.");
+        throw new ApiException(ErrorCode.ITEM_NOT_FOUNT);
     }
 
 }
