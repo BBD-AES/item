@@ -2,11 +2,13 @@ package com.bbd.item.adapter.in.web;
 
 import com.bbd.item.adapter.in.web.dto.CreateItemRequest;
 import com.bbd.item.adapter.in.web.dto.UpdateNameItemRequest;
+import com.bbd.item.adapter.in.web.dto.UpdatePriceItemRequest;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.in.dto.UpdateNameCommand;
+import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.Item;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,9 +55,17 @@ public class ItemController {
 
     @Operation(summary = "상품 이름 수정 API (관리지만 가능)")
     @PatchMapping("/{sku}/name")
-    public ResponseEntity<Void> updateName(@PathVariable String sku, @RequestBody UpdateNameItemRequest req){
+    public ResponseEntity<Void> updateName(@PathVariable String sku, @RequestBody UpdateNameItemRequest req) {
         UpdateNameCommand updateNameCommand = new UpdateNameCommand(sku, req.getName());
         itemUseCaseUpdate.updateName(updateNameCommand);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "상품 단가 수정 API (관리자만 가능)")
+    @PatchMapping("/{sku}/price")
+    public ResponseEntity<Void> updatePrice(@PathVariable String sku, @RequestBody UpdatePriceItemRequest req) {
+        UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand(sku, req.getUnitPrice());
+        itemUseCaseUpdate.updatePrice(updatePriceCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
