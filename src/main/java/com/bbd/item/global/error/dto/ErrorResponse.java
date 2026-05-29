@@ -1,24 +1,9 @@
 package com.bbd.item.global.error.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-
-@Getter
-@AllArgsConstructor
-public class ErrorResponse {
-
-    private LocalDateTime timestamp;
-    private String status;
-    private String error;
-    private String message;
-
-    public ErrorResponse(String status, String error, String message) {
-        this.timestamp = LocalDateTime.now();
-        this.status = status;
-        this.error = error;
-        this.message = message;
-    }
-
-}
+public record ErrorResponse(
+        HttpStatus status,
+        String code,
+        String message
+) {}
