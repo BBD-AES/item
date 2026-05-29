@@ -1,5 +1,6 @@
 package com.bbd.item.adapter.out.persistence;
 
+import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,14 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
         return itemJpaRepository.findAll()
                 .stream()
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
+                .toList();
+    }
+
+    @Override
+    public List<Item> getFilter(GetItemFilterCommand getItemFilterCommand) {
+        return itemJpaRepository.filter(getItemFilterCommand)
+                .stream()
+                .map(item -> itemPersistenceMapper.toDomain(item))
                 .toList();
     }
 }

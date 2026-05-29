@@ -7,11 +7,10 @@ import com.bbd.item.adapter.in.web.dto.UpdatePriceItemRequest;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
-import com.bbd.item.application.port.in.dto.CreateItemCommand;
-import com.bbd.item.application.port.in.dto.UpdateCommand;
-import com.bbd.item.application.port.in.dto.UpdateNameCommand;
-import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
+import com.bbd.item.application.port.in.dto.*;
+import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.Unit;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class ItemController {
     private final ItemUseCaseGet itemUseCaseGet;
     private final ItemUseCaseUpdate itemUseCaseUpdate;
 
-    @Operation(summary = "생성 API (관리자만 가능) ")
+    @Operation(summary = "생성 API (권한 체크)")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody CreateItemRequest req) {
         CreateItemCommand createItemCommand = new CreateItemCommand(
@@ -58,7 +57,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "상품 단가 수정 API (관리자만 가능)")
+    @Operation(summary = "상품 단가 수정 API (권한 체크)")
     @PatchMapping("/{sku}/price")
     public ResponseEntity<Void> updatePrice(@PathVariable String sku, @RequestBody UpdatePriceItemRequest req) {
         UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand(sku, req.getUnitPrice());
@@ -66,7 +65,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "상품 단가 및 이름 수정 (관리자만 가능 한번에)")
+    @Operation(summary = "상품 단가 및 이름 수정 API (권한 체크)")
     @PatchMapping("/{sku}")
     public ResponseEntity<Void> update(@PathVariable String sku, @RequestBody UpdateItemRequest req) {
         UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
@@ -74,18 +73,32 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "SKU 로 단건조회 API")
+    @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/{sku}")
     public ResponseEntity<Item> getItem(@PathVariable String sku) {
         Item item = itemUseCaseGet.getItem(sku);
         return ResponseEntity.status(HttpStatus.OK).body(item);
     }
 
-    @Operation(summary = "모든 아이템 리스트 조회")
+    @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> all = itemUseCaseGet.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(all);
+    }
+
+    @Operation(summary = "필터 조회")
+    @GetMapping
+    public ResponseEntity<List<Item>> getItemsFilter(
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) Unit unit,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice
+            ){
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
+        List<Item> filter = itemUseCaseGet.getFilter(getItemFilterCommand);
+        return ResponseEntity.status(HttpStatus.OK).body(filter);
     }
 
 

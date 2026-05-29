@@ -5,6 +5,7 @@ import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
+import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
@@ -73,6 +74,21 @@ public class GetTest1 {
                 .toList();
         // 기본데이터 2개 총 2개 담겨있어야함
         Assertions.assertEquals(2, list.size());
+    }
+
+    @Test
+    @DisplayName("필터 조회 테스트")
+    public void test2() throws Exception {
+
+        // given
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(Category.ENGINE_OIL, true, Unit.EA, 10000, 30000);
+
+        // when
+        List<Item> filter = itemUseCaseGet.getFilter(getItemFilterCommand);
+
+        // then
+        Assertions.assertEquals(2, filter.size());
+
     }
 
 

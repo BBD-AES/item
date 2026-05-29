@@ -1,6 +1,7 @@
 package com.bbd.item.application.service;
 
 import com.bbd.item.application.port.in.ItemUseCaseGet;
+import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
 import com.bbd.item.global.error.ApiException;
@@ -27,5 +28,10 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     @Override
     public List<Item> getAll() {
         return itemPersistencePort.getAll();
+    }
+
+    @Override
+    public List<Item> getFilter(GetItemFilterCommand getItemFilterCommand) {
+        return itemPersistencePort.getFilter(getItemFilterCommand);
     }
 }
