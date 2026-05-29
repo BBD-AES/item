@@ -1,4 +1,4 @@
-package com.bbd.item.enumText;
+package com.bbd.item.enumTest;
 
 import com.bbd.item.domain.model.Category;
 import org.junit.jupiter.api.Assertions;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class EnumText {
+public class EnumTest {
 
     @Test
     @DisplayName("Enum -> String 변환 테스트")

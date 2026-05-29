@@ -16,7 +16,16 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
 
     @Override
     public void save(Item item) {
-
+        ItemJpaEntity itemJpaEntity = new ItemJpaEntity(
+                item.getSku(),
+                item.getName(),
+                item.getCategory(),
+                item.getUnit(),
+                item.getSafetyStock(),
+                item.getUnitPrice(),
+                item.isActive()
+        );
+        itemJpaRepository.save(itemJpaEntity);
     }
 
 }

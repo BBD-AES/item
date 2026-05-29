@@ -19,7 +19,7 @@ public class ItemService implements ItemUseCase {
     @Override
     public void create(CreateItemCommand req)
     {
-        new Item(
+        Item item = new Item(
                 req.getSku(),
                 req.getName(),
                 req.getCategory(),
@@ -27,6 +27,7 @@ public class ItemService implements ItemUseCase {
                 req.getSafetyStock(),
                 req.getUnitPrice(),
                 req.getActive());
+        itemPersistencePort.save(item);
     }
 
 }
