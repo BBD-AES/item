@@ -1,6 +1,7 @@
 package com.bbd.item.errorHandleText;
 
 import com.bbd.item.global.error.ApiException;
+import com.bbd.item.global.error.dto.ErrorCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,10 @@ public class ErrorTest {
     public void test1() {
 
         Assertions.assertThatThrownBy(() -> {
-                    throw new ApiException(HttpStatus.NOT_FOUND, "404", "NOT_FOUND", "Not Found 테스트");
+                    throw new ApiException(ErrorCode.ITEM_NOT_FOUNT);
                 })
                 .isInstanceOf(ApiException.class)
-                .hasMessageContaining("Not Found 테스트");
+                .hasMessageContaining("상품을 찾을 수 없습니다.");
 
     }
 
