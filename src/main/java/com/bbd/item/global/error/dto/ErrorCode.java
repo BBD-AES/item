@@ -13,7 +13,8 @@ public enum ErrorCode {
     /**
      * Item 관련된 에러
      */
-    ITEM_NOT_FOUNT(HttpStatus.NOT_FOUND, "I404", "존재하지 않는 상품입니다.."),
+    ITEM_NOT_FOUNT(HttpStatus.NOT_FOUND, "I404", "존재하지 않는 상품입니다."),
+    ITEM_CONFLICT(HttpStatus.CONFLICT, "I409", "이미 존재하는 SKU 입니다."),
 
     ;
 

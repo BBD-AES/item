@@ -5,6 +5,8 @@ import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * JPAEntity -> Domain 으로 변환
  */
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 public class ItemPersistenceAdapter implements ItemPersistencePort {
 
     private final ItemJpaRepository itemJpaRepository;
+    private final ItemPersistenceMapper itemPersistenceMapper;
 
     @Override
     public void save(Item item) {
@@ -26,6 +29,13 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 item.isActive()
         );
         itemJpaRepository.save(itemJpaEntity);
+    }
+
+    @Override
+    public Optional<Item> findBySku(String sku) {
+        Optional<Item> item = itemJpaRepository.findById(sku)
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
+        return item;
     }
 
 }
