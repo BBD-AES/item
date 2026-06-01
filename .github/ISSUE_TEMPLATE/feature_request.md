@@ -1,7 +1,7 @@
 ---
 name: 기능 요청
 about: 새로운 기능 개발 이슈를 작성합니다.
-title: "[FEAT] "
+title: "[Feat] "
 labels: enhancement
 assignees: ''
 ---
