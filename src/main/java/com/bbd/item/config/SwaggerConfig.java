@@ -15,7 +15,7 @@ public class SwaggerConfig {
                         .description("Item Application API Documentation")
                         .version("v1.0"))
                 .addServersItem(new Server()
-                        .url("http://localhost:8082/item")
+                        .url("http://localhost:8082")
                         .description("Local Direct"))
 
                 .addServersItem(new Server()

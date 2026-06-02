@@ -7,6 +7,7 @@ import com.bbd.item.domain.model.Unit;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ItemJpaEntity> filter(GetItemFilterCommand getItemFilterCommand) {
+    public List<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
         return jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
@@ -30,15 +31,19 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                         priceGoe(getItemFilterCommand.getMinPrice()),
                         priceLoe(getItemFilterCommand.getMaxPrice())
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
     @Override
-    public List<ItemJpaEntity> filterName(String name) {
+    public List<ItemJpaEntity> filterName(Pageable pageable, String name) {
         return jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
                 .where( nameContains(name) )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -48,7 +53,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
         // null 검사를 하려고했지만, 공백이 들어올 위험이 있기 때문에 StringUtil 중에 hasText 즉, 공백이 없는 제대로 된 문자인지 확인
         // public static boolean hasText(@Nullable String str) { return str != null && !str.isBlank(); } 으로 구현 되어있음
         return StringUtils.hasText(name) ? itemJpaEntity.name.contains(name) : null;
-
     }
 
     // 카테고리 필터

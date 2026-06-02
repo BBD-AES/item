@@ -5,6 +5,7 @@ import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -47,24 +48,24 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
     }
 
     @Override
-    public List<Item> getAll() {
-        return itemJpaRepository.findAll()
+    public List<Item> getAll(Pageable pageable) {
+        return itemJpaRepository.findAll(pageable)
                 .stream()
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
                 .toList();
     }
 
     @Override
-    public List<Item> getFilter(GetItemFilterCommand getItemFilterCommand) {
-        return itemJpaRepository.filter(getItemFilterCommand)
+    public List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+        return itemJpaRepository.filter(pageable, getItemFilterCommand)
                 .stream()
                 .map(item -> itemPersistenceMapper.toDomain(item))
                 .toList();
     }
 
     @Override
-    public List<Item> getName(GetNameCommand getNameCommand) {
-        return itemJpaRepository.filterName(getNameCommand.getName())
+    public List<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
+        return itemJpaRepository.filterName(pageable, getNameCommand.getName())
                 .stream()
                 .map(item -> itemPersistenceMapper.toDomain(item))
                 .toList();

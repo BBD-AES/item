@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,22 @@ public class ItemController {
     private final ItemUseCaseCreate itemUseCaseCreate;
     private final ItemUseCaseGet itemUseCaseGet;
     private final ItemUseCaseUpdate itemUseCaseUpdate;
+
+    /**
+     * Post
+     * 1. 상품 생성 API
+     *
+     * Patch
+     * 1. 상품 이름 수정 API
+     * 2. 상품 단가 수정 API
+     * 3. 상품 이름 & 단가 수정 API
+     *
+     * Get
+     * 1. Sku 단건 조회 API
+     * 2. 전체 조회 API (pageable)
+     * 3. 필터 조회 API (pageable)
+     * 4. 이름 조회 API (pageable)
+     */
 
     @Operation(summary = "생성 API (권한 체크)")
     @PostMapping
@@ -82,14 +99,15 @@ public class ItemController {
 
     @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
-    public ResponseEntity<List<Item>> getAllItems() {
-        List<Item> items = itemUseCaseGet.getAll();
+    public ResponseEntity<List<Item>> getAllItems(Pageable pageable) {
+        List<Item> items = itemUseCaseGet.getAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
     @Operation(summary = "필터 조회")
     @GetMapping
     public ResponseEntity<List<Item>> getItemsFilter(
+            Pageable pageable,
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active,
             @RequestParam(required = false) Unit unit,
@@ -97,15 +115,18 @@ public class ItemController {
             @RequestParam(required = false) Integer maxPrice
             ){
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
-        List<Item> items = itemUseCaseGet.getFilter(getItemFilterCommand);
+        List<Item> items = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
     @Operation(summary = "이름으로 조회")
     @GetMapping("/name")
-    public ResponseEntity<List<Item>> getItemsContainsName(@RequestParam(required = false) String name){
+    public ResponseEntity<List<Item>> getItemsContainsName(
+            Pageable pageable,
+            @RequestParam(required = false) String name
+    ){
         GetNameCommand getNameCommand = new GetNameCommand(name);
-        List<Item> items = itemUseCaseGet.getName(getNameCommand);
+        List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
 
