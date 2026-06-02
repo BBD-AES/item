@@ -39,12 +39,12 @@ public class ItemController {
     /**
      * Post
      * 1. 상품 생성 API
-     *
+     * <p>
      * Patch
      * 1. 상품 이름 수정 API
      * 2. 상품 단가 수정 API
      * 3. 상품 이름 & 단가 수정 API
-     *
+     * <p>
      * Get
      * 1. Sku 단건 조회 API
      * 2. 전체 조회 API (pageable)
@@ -117,7 +117,7 @@ public class ItemController {
             @RequestParam(required = false) Unit unit,
             @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) Integer maxPrice
-            ){
+    ) {
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
         List<Item> items = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);
@@ -128,7 +128,7 @@ public class ItemController {
     public ResponseEntity<List<Item>> getItemsContainsName(
             Pageable pageable,
             @RequestParam(required = false) String name
-    ){
+    ) {
         GetNameCommand getNameCommand = new GetNameCommand(name);
         List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);
