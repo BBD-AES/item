@@ -13,11 +13,14 @@ import com.bbd.item.domain.model.Item;
 import com.bbd.item.domain.model.Unit;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +54,7 @@ public class ItemController {
 
     @Operation(summary = "생성 API (권한 체크)")
     @PostMapping
+    @Valid
     public ResponseEntity<Void> create(@RequestBody CreateItemRequest req) {
         CreateItemCommand createItemCommand = new CreateItemCommand(
                 req.getSku(),
@@ -68,7 +72,7 @@ public class ItemController {
 
     @Operation(summary = "상품 이름 수정 API (관리지만 가능)")
     @PatchMapping("/{sku}/name")
-    public ResponseEntity<Void> updateName(@PathVariable String sku, @RequestBody UpdateNameItemRequest req) {
+    public ResponseEntity<Void> updateName(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateNameItemRequest req) {
         UpdateNameCommand updateNameCommand = new UpdateNameCommand(sku, req.getName());
         itemUseCaseUpdate.updateName(updateNameCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -76,7 +80,7 @@ public class ItemController {
 
     @Operation(summary = "상품 단가 수정 API (권한 체크)")
     @PatchMapping("/{sku}/price")
-    public ResponseEntity<Void> updatePrice(@PathVariable String sku, @RequestBody UpdatePriceItemRequest req) {
+    public ResponseEntity<Void> updatePrice(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdatePriceItemRequest req) {
         UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand(sku, req.getUnitPrice());
         itemUseCaseUpdate.updatePrice(updatePriceCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -84,7 +88,7 @@ public class ItemController {
 
     @Operation(summary = "상품 단가 및 이름 수정 API (권한 체크)")
     @PatchMapping("/{sku}")
-    public ResponseEntity<Void> update(@PathVariable String sku, @RequestBody UpdateItemRequest req) {
+    public ResponseEntity<Void> update(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateItemRequest req) {
         UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
         itemUseCaseUpdate.update(updateCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -92,7 +96,7 @@ public class ItemController {
 
     @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/{sku}")
-    public ResponseEntity<Item> getItem(@PathVariable String sku) {
+    public ResponseEntity<Item> getItem(@NotBlank @PathVariable String sku) {
         Item item = itemUseCaseGet.getItem(sku);
         return ResponseEntity.status(HttpStatus.OK).body(item);
     }
