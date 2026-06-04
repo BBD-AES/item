@@ -16,7 +16,8 @@ public class ItemPersistenceMapper {
                 itemJpaEntity.getUnit(),
                 itemJpaEntity.getSafetyStock(),
                 itemJpaEntity.getUnitPrice(),
-                itemJpaEntity.isActive()
+                itemJpaEntity.isActive(),
+                itemJpaEntity.getSourcingType()
         );
     }
 

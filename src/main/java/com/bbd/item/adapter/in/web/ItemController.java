@@ -1,9 +1,6 @@
 package com.bbd.item.adapter.in.web;
 
-import com.bbd.item.adapter.in.web.dto.CreateItemRequest;
-import com.bbd.item.adapter.in.web.dto.UpdateItemRequest;
-import com.bbd.item.adapter.in.web.dto.UpdateNameItemRequest;
-import com.bbd.item.adapter.in.web.dto.UpdatePriceItemRequest;
+import com.bbd.item.adapter.in.web.dto.*;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
@@ -64,7 +61,8 @@ public class ItemController {
                 req.getUnit(),
                 req.getSafetyStock(),
                 req.getUnitPrice(),
-                req.getActive()
+                req.getActive(),
+                req.getSourcingType()
         );
         itemUseCaseCreate.create(createItemCommand);
         log.info(req.toString());
@@ -107,14 +105,15 @@ public class ItemController {
 
     @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/{sku}")
-    public ResponseEntity<Item> getItem(@NotBlank @PathVariable String sku) {
+    public ResponseEntity<ItemResponse> getItem(@NotBlank @PathVariable String sku) {
         Item item = itemUseCaseGet.getItem(sku);
-        return ResponseEntity.status(HttpStatus.OK).body(item);
+        ItemResponse itemResponse = new ItemResponse(item);
+        return ResponseEntity.status(HttpStatus.OK).body(itemResponse);
     }
 
     @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
-    public ResponseEntity<List<Item>> getAllItems(
+    public ResponseEntity<List<ItemResponse>> getAllItems(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
             @RequestParam(required = false, defaultValue = "sku") String sortBy,
@@ -123,12 +122,15 @@ public class ItemController {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         List<Item> items = itemUseCaseGet.getAll(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(items);
+        List<ItemResponse> itemResponseList = items.stream()
+                .map(ItemResponse::new)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
     }
 
     @Operation(summary = "필터 조회")
     @GetMapping
-    public ResponseEntity<List<Item>> getItemsFilter(
+    public ResponseEntity<List<ItemResponse>> getItemsFilter(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
             @RequestParam(required = false, defaultValue = "sku") String sortBy,
@@ -143,12 +145,15 @@ public class ItemController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
         List<Item> items = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
-        return ResponseEntity.status(HttpStatus.OK).body(items);
+        List<ItemResponse> itemResponseList = items.stream()
+                .map(ItemResponse::new)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
     }
 
     @Operation(summary = "이름으로 조회")
     @GetMapping("/name")
-    public ResponseEntity<List<Item>> getItemsContainsName(
+    public ResponseEntity<List<ItemResponse>> getItemsContainsName(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
             @RequestParam(required = false, defaultValue = "sku") String sortBy,
@@ -159,7 +164,10 @@ public class ItemController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetNameCommand getNameCommand = new GetNameCommand(name);
         List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
-        return ResponseEntity.status(HttpStatus.OK).body(items);
+        List<ItemResponse> itemResponseList = items.stream()
+                .map(ItemResponse::new)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
     }
 
 

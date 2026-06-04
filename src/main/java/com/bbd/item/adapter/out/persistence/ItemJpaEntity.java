@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.out.persistence;
 
 import com.bbd.item.domain.model.Category;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,6 +39,10 @@ public class ItemJpaEntity {
     @Column(nullable = false)
     private boolean active; // 활성 여부 (삭제는 없고, 비활성화로 관리)
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SourcingType sourcingType;
+
     // JPA 저장용 생성자
     public ItemJpaEntity(
             String sku,
@@ -46,7 +51,8 @@ public class ItemJpaEntity {
             Unit unit,
             int safetyStock,
             int unitPrice,
-            boolean active
+            boolean active,
+            SourcingType sourcingType
     ) {
         this.sku = sku;
         this.name = name;
@@ -55,6 +61,7 @@ public class ItemJpaEntity {
         this.safetyStock = safetyStock;
         this.unitPrice = unitPrice;
         this.active = active;
+        this.sourcingType = sourcingType;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bbd.item.application.port.in.dto;
 
 import com.bbd.item.domain.model.Category;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class CreateItemCommand {
     private Integer unitPrice;
 
     private Boolean active;
+
+    private SourcingType sourcingType;
 
 }

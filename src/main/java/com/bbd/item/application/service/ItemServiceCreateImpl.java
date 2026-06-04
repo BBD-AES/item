@@ -34,7 +34,9 @@ public class ItemServiceCreateImpl implements ItemUseCaseCreate {
                 req.getUnit(),
                 req.getSafetyStock(),
                 req.getUnitPrice(),
-                req.getActive());
+                req.getActive(),
+                req.getSourcingType()
+        );
 
         // 저장
         itemPersistencePort.save(item);

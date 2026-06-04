@@ -21,8 +21,10 @@ public class Item {
 
     private boolean active; // 활성 여부 (삭제는 없고, 비활성화로 관리)
 
-    public Item(String sku, String name, Category category, Unit unit, int safetyStock, int unitPrice, boolean active) {
-        validate(sku, name, safetyStock, unitPrice); // null 혹은 공백 값 검사
+    private SourcingType sourcingType; // 생산 or 구매
+
+    public Item(String sku, String name, Category category, Unit unit, int safetyStock, int unitPrice, boolean active, SourcingType sourcingType) {
+        validate(sku, name, safetyStock, unitPrice, sourcingType); // null 혹은 공백 값 검사
         this.sku = sku;
         this.name = name;
         this.category = category;
@@ -30,9 +32,10 @@ public class Item {
         this.safetyStock = safetyStock;
         this.unitPrice = unitPrice;
         this.active = active;
+        this.sourcingType = sourcingType;
     }
 
-    private void validate(String sku, String name, int safetyStock, int unitPrice) {
+    private void validate(String sku, String name, int safetyStock, int unitPrice, SourcingType sourcingType) {
         if (sku == null || sku.isBlank()) {
             throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
@@ -46,6 +49,10 @@ public class Item {
         }
 
         if (unitPrice < 0) {
+            throw new ApiException(ErrorCode.VALIDATION_ERROR);
+        }
+
+        if (sourcingType == null) {
             throw new ApiException(ErrorCode.VALIDATION_ERROR);
         }
     }

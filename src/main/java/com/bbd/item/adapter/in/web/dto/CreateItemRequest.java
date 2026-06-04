@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.in.web.dto;
 
 import com.bbd.item.domain.model.Category;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,8 @@ public class CreateItemRequest {
 
     @NotBlank
     private Boolean active;
+
+    @NotBlank
+    private SourcingType sourcingType;
 
 }

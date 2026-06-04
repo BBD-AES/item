@@ -35,7 +35,8 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 item.getUnit(),
                 item.getSafetyStock(),
                 item.getUnitPrice(),
-                item.isActive()
+                item.isActive(),
+                item.getSourcingType()
         );
         itemJpaRepository.save(itemJpaEntity);
     }
