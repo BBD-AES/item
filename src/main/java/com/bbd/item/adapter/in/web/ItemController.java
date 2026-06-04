@@ -17,10 +17,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,12 +40,12 @@ public class ItemController {
     /**
      * Post
      * 1. 상품 생성 API
-     *
+     * <p>
      * Patch
      * 1. 상품 이름 수정 API
      * 2. 상품 단가 수정 API
      * 3. 상품 이름 & 단가 수정 API
-     *
+     * <p>
      * Get
      * 1. Sku 단건 조회 API
      * 2. 전체 조회 API (pageable)
@@ -70,6 +71,11 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * PATCH 구분선
+     * ======================================
+     */
+
     @Operation(summary = "상품 이름 수정 API (관리지만 가능)")
     @PatchMapping("/{sku}/name")
     public ResponseEntity<Void> updateName(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateNameItemRequest req) {
@@ -94,6 +100,11 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * GET 구분선
+     * ======================================
+     */
+
     @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/{sku}")
     public ResponseEntity<Item> getItem(@NotBlank @PathVariable String sku) {
@@ -103,7 +114,14 @@ public class ItemController {
 
     @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
-    public ResponseEntity<List<Item>> getAllItems(Pageable pageable) {
+    public ResponseEntity<List<Item>> getAllItems(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size,
+            @RequestParam(required = false, defaultValue = "sku") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String direction
+            ) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         List<Item> items = itemUseCaseGet.getAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(items);
     }
@@ -111,13 +129,18 @@ public class ItemController {
     @Operation(summary = "필터 조회")
     @GetMapping
     public ResponseEntity<List<Item>> getItemsFilter(
-            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size,
+            @RequestParam(required = false, defaultValue = "sku") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active,
             @RequestParam(required = false) Unit unit,
             @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) Integer maxPrice
-            ){
+    ) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
         List<Item> items = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);
@@ -126,9 +149,14 @@ public class ItemController {
     @Operation(summary = "이름으로 조회")
     @GetMapping("/name")
     public ResponseEntity<List<Item>> getItemsContainsName(
-            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size,
+            @RequestParam(required = false, defaultValue = "sku") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false) String name
-    ){
+    ) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetNameCommand getNameCommand = new GetNameCommand(name);
         List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
         return ResponseEntity.status(HttpStatus.OK).body(items);

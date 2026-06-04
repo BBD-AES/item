@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ItemJpaEntity {
 
+
+
     @Id
     @Column(nullable = false, updatable = false, length = 100)
     private String sku;
