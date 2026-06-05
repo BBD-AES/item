@@ -19,6 +19,10 @@ public class SwaggerConfig {
                         .description("Local Direct"))
 
                 .addServersItem(new Server()
+                        .url("http://localhost:8080/item")
+                        .description("docker compose 전용"))
+
+                .addServersItem(new Server()
                         .url("http://192.168.200.220/item")
                         .description("Nginx"))
 
