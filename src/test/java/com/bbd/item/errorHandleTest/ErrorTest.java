@@ -15,7 +15,7 @@ public class ErrorTest {
     public void test1() {
 
         Assertions.assertThatThrownBy(() -> {
-                    throw new ApiException(ErrorCode.ITEM_NOT_FOUNT);
+                    throw new ApiException(ErrorCode.ITEM_NOT_FOUND);
                 })
                 .isInstanceOf(ApiException.class)
                 .hasMessageContaining("상품을 찾을 수 없습니다.");

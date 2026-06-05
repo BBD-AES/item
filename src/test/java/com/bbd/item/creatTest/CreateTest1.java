@@ -8,6 +8,7 @@ import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
@@ -52,7 +53,8 @@ public class CreateTest1 {
                 Unit.EA,
                 5,
                 11900,
-                true
+                true,
+                SourcingType.BUY
         );
         itemUseCaseCreate.create(createItemCommand);
     }
@@ -67,7 +69,8 @@ public class CreateTest1 {
                 Unit.EA,
                 5,
                 11900,
-                true
+                true,
+                SourcingType.BUY
         );
         Assertions.assertThrows(ApiException.class, () -> {
             itemUseCaseCreate.create(createItemCommand);
@@ -80,7 +83,7 @@ public class CreateTest1 {
     public void test2() throws Exception {
 
         Item item = itemPersistencePort.findBySku("HQ-Test")
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_CONFLICT));
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
 
         assertEquals("HQ-Test", item.getSku());
 

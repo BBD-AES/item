@@ -26,7 +26,7 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
         // 이미 존재하는지 확인
         Item item = itemPersistencePort.findBySku(updateNameCommand.getSku())
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
 
 
         // 존재하다면 이름 업데이트
@@ -43,7 +43,7 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
         // 이미 존재하는지 확인
         Item item = itemPersistencePort.findBySku(updatePriceCommand.getSku())
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
 
         // 존재한다면 가격 업데이트
         item.changePrice(updatePriceCommand.getUnitPrice());
@@ -58,7 +58,7 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
         // 이미 존재하는지 확인
         Item item = itemPersistencePort.findBySku(updateCommand.getSku())
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
 
         // 존재한다면 가격 및 이름 업데이트
         item.change(updateCommand.getName(), updateCommand.getUnitPrice());

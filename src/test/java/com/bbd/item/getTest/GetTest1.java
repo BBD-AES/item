@@ -10,6 +10,7 @@ import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +57,8 @@ public class GetTest1 {
                 Unit.EA,
                 5,
                 11900,
-                true
+                true,
+                SourcingType.BUY
         );
         itemUseCaseCreate.create(createItemCommand);
         CreateItemCommand createItemCommand2 = new CreateItemCommand(
@@ -66,7 +68,8 @@ public class GetTest1 {
                 Unit.EA,
                 10,
                 21900,
-                true
+                true,
+                SourcingType.BUY
         );
         itemUseCaseCreate.create(createItemCommand2);
     }

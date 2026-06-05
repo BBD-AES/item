@@ -13,7 +13,7 @@ public class ErrorTestController {
 
     @GetMapping
     public ResponseEntity<Void> test1(){
-        throw new ApiException(ErrorCode.ITEM_NOT_FOUNT);
+        throw new ApiException(ErrorCode.ITEM_NOT_FOUND);
     }
 
 }

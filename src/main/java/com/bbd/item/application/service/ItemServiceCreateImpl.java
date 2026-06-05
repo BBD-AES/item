@@ -24,7 +24,7 @@ public class ItemServiceCreateImpl implements ItemUseCaseCreate {
 
         // 이미 존재하는지 확인
         if(itemPersistencePort.existBySku(req.getSku())){
-            throw new ApiException(ErrorCode.ITEM_CONFLICT);
+            throw new ApiException(ErrorCode.ITEM_SKU_CONFLICT);
         }
 
         Item item = new Item(

@@ -9,6 +9,7 @@ import com.bbd.item.application.port.in.dto.UpdateCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.SourcingType;
 import com.bbd.item.domain.model.Unit;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
@@ -55,7 +56,8 @@ public class UpdateTest1 {
                 Unit.EA,
                 5,
                 11900,
-                true
+                true,
+                SourcingType.MAKE
         );
         itemUseCaseCreate.create(createItemCommand);
     }

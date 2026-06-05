@@ -24,7 +24,7 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     @Override
     public Item getItem(String sku) {
         return itemPersistencePort.findBySku(sku)
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUNT));
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
     }
 
     @Override
