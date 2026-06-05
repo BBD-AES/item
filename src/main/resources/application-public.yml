@@ -1,7 +1,3 @@
-server:
-  servlet:
-    context-path: /item
-
 spring:
   application:
     name: item
