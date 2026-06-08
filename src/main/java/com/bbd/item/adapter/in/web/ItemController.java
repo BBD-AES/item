@@ -132,7 +132,7 @@ public class ItemController {
     public ResponseEntity<PageResponse> getItemsFilterV2(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
-            @RequestParam(required = false, defaultValue = "sku") String sortBy,
+            @RequestParam(required = false, defaultValue = "name") String sortBy,
             @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active,

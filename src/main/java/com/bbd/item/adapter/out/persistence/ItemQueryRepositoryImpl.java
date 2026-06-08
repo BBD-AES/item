@@ -4,12 +4,14 @@ package com.bbd.item.adapter.out.persistence;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Unit;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -23,6 +25,10 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     @Override
     public Page<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+
+
+
+
         List<ItemJpaEntity> content = jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
@@ -33,6 +39,8 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                         priceGoe(getItemFilterCommand.getMinPrice()),
                         priceLoe(getItemFilterCommand.getMaxPrice())
                 )
+
+
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -104,15 +112,51 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     }
 
 
-    /**
-     *     private Category category;
-     *
-     *     private Boolean active;
-     *
-     *     private Unit unit;
-     *
-     *     private Integer minPrice;
-     *
-     *     private Integer maxPrice;
-     */
+    // Sort & 방향 꺼내주기
+    // OrderSpecifier : Querydsl에서 ORDER BY 조건을 표현하는 클래스
+    private OrderSpecifier<?>[] getOrderSpecifiers(Pageable pageable) {
+        // 1. sort 기준, 방향 꺼내기
+        Sort.Order order = pageable.getSort()
+                .stream()
+                .findFirst()
+                .orElse(Sort.Order.asc("name"));
+
+        String sortBy = order.getProperty();
+        Sort.Direction direction = order.getDirection();
+
+        // 2. name 정렬
+        if (sortBy.equals("name")) {
+            if (direction.equals(Sort.Direction.ASC)) {
+                return new OrderSpecifier<?>[]{
+                        itemJpaEntity.name.asc(),
+                        itemJpaEntity.sku.asc()
+                };
+            }
+
+            return new OrderSpecifier<?>[]{
+                    itemJpaEntity.name.desc(),
+                    itemJpaEntity.sku.asc()
+            };
+        }
+
+        // 3. sku 정렬
+        if (sortBy.equals("sku")) {
+            if (direction.equals(Sort.Direction.ASC)) {
+                return new OrderSpecifier<?>[]{
+                        itemJpaEntity.sku.asc()
+                };
+            }
+
+            return new OrderSpecifier<?>[]{
+                    itemJpaEntity.sku.desc()
+            };
+        }
+
+        // 4. 허용하지 않는 정렬 기준이면 기본 정렬
+        return new OrderSpecifier<?>[]{
+                itemJpaEntity.name.asc(),
+                itemJpaEntity.sku.asc()
+        };
+    }
+
 }
