@@ -5,6 +5,7 @@ import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.Item;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -49,11 +50,9 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
     }
 
     @Override
-    public List<Item> getAll(Pageable pageable) {
+    public Page<Item> getAll(Pageable pageable) {
         return itemJpaRepository.findAll(pageable)
-                .stream()
-                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
-                .toList();
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
     @Override

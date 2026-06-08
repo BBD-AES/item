@@ -8,6 +8,7 @@ import com.bbd.item.domain.model.Item;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     }
 
     @Override
-    public List<Item> getAll(Pageable pageable) {
+    public Page<Item> getAll(Pageable pageable) {
         return itemPersistencePort.getAll(pageable);
     }
 

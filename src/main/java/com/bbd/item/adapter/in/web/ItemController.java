@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -111,8 +112,6 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemResponse);
     }
 
-    @Operation(summary = "전체 조회 API")
-    @GetMapping("/all")
     public ResponseEntity<List<ItemResponse>> getAllItems(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
@@ -121,11 +120,26 @@ public class ItemController {
             ) {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        List<Item> items = itemUseCaseGet.getAll(pageable);
+        Page<Item> items = itemUseCaseGet.getAll(pageable);
         List<ItemResponse> itemResponseList = items.stream()
                 .map(ItemResponse::new)
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
+    }
+
+    @Operation(summary = "전체 조회 API")
+    @GetMapping("/all")
+    public ResponseEntity<PageResponse> getAllItemsV2(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size,
+            @RequestParam(required = false, defaultValue = "sku") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String direction
+    ) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+        Page<ItemResponse> map = itemUseCaseGet.getAll(pageable).map(item -> new ItemResponse(item));
+        PageResponse pageResponse = PageResponse.from(map);
+        return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
     }
 
     @Operation(summary = "필터 조회")

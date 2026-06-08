@@ -3,6 +3,7 @@ package com.bbd.item.application.port.out;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.domain.model.Item;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface ItemPersistencePort {
     Optional<Item> findBySku(String sku);
 
     // 전체 조회
-    List<Item> getAll(Pageable pageable);
+    Page<Item> getAll(Pageable pageable);
 
     // 필터 조회
     List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
