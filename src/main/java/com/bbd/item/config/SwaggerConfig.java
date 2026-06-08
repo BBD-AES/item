@@ -19,8 +19,8 @@ public class SwaggerConfig {
                         .description("Local Direct"))
 
                 .addServersItem(new Server()
-                        .url("http://localhost:8080")
-                        .description("docker compose 게이트웨이 전용"))
+                        .url("http://localhost:8082/item")
+                        .description("local docker compose 전용"))
 
                 .addServersItem(new Server()
                         .url("http://192.168.200.220/item")
