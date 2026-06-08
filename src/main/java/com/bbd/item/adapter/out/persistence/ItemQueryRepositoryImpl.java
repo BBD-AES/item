@@ -7,6 +7,8 @@ import com.bbd.item.domain.model.Unit;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
@@ -20,8 +22,8 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
-        return jpaQueryFactory
+    public Page<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+        List<ItemJpaEntity> content = jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
                 .where(
@@ -34,17 +36,38 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        Long total = jpaQueryFactory
+                .select(itemJpaEntity.count())
+                .from(itemJpaEntity)
+                .where(
+                        categoryEq(getItemFilterCommand.getCategory()),
+                        activeEq(getItemFilterCommand.getActive()),
+                        unitEq(getItemFilterCommand.getUnit()),
+                        priceGoe(getItemFilterCommand.getMinPrice()),
+                        priceLoe(getItemFilterCommand.getMaxPrice())
+                )
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total == null ? 0 : total);
     }
 
     @Override
-    public List<ItemJpaEntity> filterName(Pageable pageable, String name) {
-        return jpaQueryFactory
+    public Page<ItemJpaEntity> filterName(Pageable pageable, String name) {
+        List<ItemJpaEntity> content = jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
-                .where( nameContains(name) )
+                .where(nameContains(name))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        Long total = jpaQueryFactory
+                .select(itemJpaEntity.count())
+                .where(nameContains(name))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     // 이름 동적 쿼리

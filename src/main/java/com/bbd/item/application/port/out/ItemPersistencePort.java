@@ -24,8 +24,8 @@ public interface ItemPersistencePort {
     Page<Item> getAll(Pageable pageable);
 
     // 필터 조회
-    List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
+    Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
 
     // 이름 조회 (포함)
-    List<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
+    Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
 }

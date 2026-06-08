@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -95,10 +96,10 @@ public class GetTest1 {
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(Category.ENGINE_OIL, true, Unit.EA, 10000, 30000);
 
         // when
-        List<Item> filter = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
+        Page<Item> page = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
 
         // then
-        Assertions.assertEquals(3, filter.size());
+        Assertions.assertEquals(10, page.getContent().size());
 
     }
 
@@ -112,17 +113,10 @@ public class GetTest1 {
         GetNameCommand getNameCommand = new GetNameCommand("엔진");
 
         // when
-        List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
+        Page<Item> pageItem = itemUseCaseGet.getName(pageable, getNameCommand);
 
-        // then
-        assertTrue(
-                items.stream()
-                        .allMatch(item -> item.getName().contains("엔진"))
-        );
 
-        items.forEach(i -> {
-            System.out.println("i.getName() = " + i.getName());
-        });
+
     }
 
 

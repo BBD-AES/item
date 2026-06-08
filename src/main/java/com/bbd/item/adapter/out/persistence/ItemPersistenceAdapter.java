@@ -56,18 +56,14 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
     }
 
     @Override
-    public List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
         return itemJpaRepository.filter(pageable, getItemFilterCommand)
-                .stream()
-                .map(item -> itemPersistenceMapper.toDomain(item))
-                .toList();
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
     @Override
-    public List<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
+    public Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
         return itemJpaRepository.filterName(pageable, getNameCommand.getName())
-                .stream()
-                .map(item -> itemPersistenceMapper.toDomain(item))
-                .toList();
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 }

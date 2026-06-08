@@ -14,8 +14,8 @@ public interface ItemUseCaseGet {
 
     Page<Item> getAll(Pageable pageable);
 
-    List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
+    Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
 
-    List<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
+    Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
 
 }

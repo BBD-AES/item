@@ -34,12 +34,12 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     }
 
     @Override
-    public List<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
         return itemPersistencePort.getFilter(pageable, getItemFilterCommand);
     }
 
     @Override
-    public List<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
+    public Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
         return itemPersistencePort.getName(pageable, getNameCommand);
     }
 }

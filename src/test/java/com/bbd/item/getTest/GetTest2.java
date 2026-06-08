@@ -33,9 +33,11 @@ public class GetTest2 {
         Assertions.assertEquals(20, all.getContent().size());
 
         // 체크용도
-        for(Item item : all.getContent()){
-            System.out.println(item.getName());
-        }
+        System.out.println("all.getNumber() = " + all.getNumber());
+        System.out.println("all.getTotalElements() = " + all.getTotalElements());
+        System.out.println("all.getTotalPages() = " + all.getTotalPages());
+        System.out.println("all.getContent() = " + all.getContent());
+        
 
     }
 

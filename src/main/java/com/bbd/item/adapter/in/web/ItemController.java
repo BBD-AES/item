@@ -112,21 +112,6 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemResponse);
     }
 
-    public ResponseEntity<List<ItemResponse>> getAllItems(
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "20") Integer size,
-            @RequestParam(required = false, defaultValue = "sku") String sortBy,
-            @RequestParam(required = false, defaultValue = "ASC") String direction
-            ) {
-        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        Page<Item> items = itemUseCaseGet.getAll(pageable);
-        List<ItemResponse> itemResponseList = items.stream()
-                .map(ItemResponse::new)
-                .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
-    }
-
     @Operation(summary = "전체 조회 API")
     @GetMapping("/all")
     public ResponseEntity<PageResponse> getAllItemsV2(
@@ -144,7 +129,7 @@ public class ItemController {
 
     @Operation(summary = "필터 조회")
     @GetMapping
-    public ResponseEntity<List<ItemResponse>> getItemsFilter(
+    public ResponseEntity<PageResponse> getItemsFilterV2(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
             @RequestParam(required = false, defaultValue = "sku") String sortBy,
@@ -158,16 +143,14 @@ public class ItemController {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(category, active, unit, minPrice, maxPrice);
-        List<Item> items = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
-        List<ItemResponse> itemResponseList = items.stream()
-                .map(ItemResponse::new)
-                .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
+        Page<ItemResponse> map = itemUseCaseGet.getFilter(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
+        PageResponse pageResponse = PageResponse.from(map);
+        return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
     }
 
     @Operation(summary = "이름으로 조회")
     @GetMapping("/name")
-    public ResponseEntity<List<ItemResponse>> getItemsContainsName(
+    public ResponseEntity<PageResponse> getItemsContainsNameV2(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size,
             @RequestParam(required = false, defaultValue = "sku") String sortBy,
@@ -177,11 +160,10 @@ public class ItemController {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetNameCommand getNameCommand = new GetNameCommand(name);
-        List<Item> items = itemUseCaseGet.getName(pageable, getNameCommand);
-        List<ItemResponse> itemResponseList = items.stream()
-                .map(ItemResponse::new)
-                .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(itemResponseList);
+        Page<Item> pageItem = itemUseCaseGet.getName(pageable, getNameCommand);
+        Page<ItemResponse> map = pageItem.map(item -> new ItemResponse(item));
+        PageResponse pageResponse = PageResponse.from(map);
+        return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
     }
 
 
