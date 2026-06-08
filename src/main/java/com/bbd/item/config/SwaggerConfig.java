@@ -23,12 +23,12 @@ public class SwaggerConfig {
                         .description("local docker compose 전용"))
 
                 .addServersItem(new Server()
-                        .url("http://192.168.200.220/item")
-                        .description("Nginx"))
+                        .url("http://http://100.73.142.41/item")
+                        .description("강의실 노트북"))
 
                 .addServersItem(new Server()
-                        .url("http://112.218.95.58/item")
-                        .description("External Nginx"));
+                        .url("http://192.168.200.220/item")
+                        .description("Nginx"));
 
 
     }
