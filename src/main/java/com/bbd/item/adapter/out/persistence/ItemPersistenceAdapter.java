@@ -55,9 +55,19 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
+
     @Override
     public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
-        return itemJpaRepository.filter(pageable, getItemFilterCommand)
+
+
+        // 1. 기본 목록 조회 -> Native Query WITH 사용하기
+        if (getItemFilterCommand.getActive() == null && getItemFilterCommand.getCategory() == null && getItemFilterCommand.getName() == null) {
+            return itemJpaRepository.getNative(pageable)
+                    .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
+        }
+
+        // 2. 카테고리/이름/active 등 동적 쿼리 필요시 Querydsl 사용하기
+        return itemJpaRepository.filterV2(pageable, getItemFilterCommand)
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
@@ -66,4 +76,6 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
         return itemJpaRepository.filterName(pageable, getNameCommand.getName())
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
+
+
 }

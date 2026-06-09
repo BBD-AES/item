@@ -1,5 +1,8 @@
 package com.bbd.item.getTest;
 
+import com.bbd.item.adapter.out.persistence.ItemJpaEntity;
+import com.bbd.item.adapter.out.persistence.ItemJpaRepository;
+import com.bbd.item.adapter.out.persistence.ItemPersistenceMapper;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.domain.model.Item;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +20,12 @@ public class GetTest2 {
 
     @Autowired
     private ItemUseCaseGet itemUseCaseGet;
+
+    @Autowired
+    private ItemJpaRepository itemJpaRepository;
+
+    @Autowired
+    private ItemPersistenceMapper itemPersistenceMapper;
 
     @Test
     @DisplayName("Page을 통한 getAll 테스트")
@@ -40,6 +49,26 @@ public class GetTest2 {
         
 
     }
+
+    @Test
+    @DisplayName("nativeQuery테스트")
+    public void test2() throws Exception{
+
+        // given
+        Sort.Direction sortDirection = Sort.Direction.fromString("ASC");
+        Pageable pageable = PageRequest.of(0, 20, Sort.by(sortDirection, "name"));
+
+        // when
+        Page<ItemJpaEntity> all = itemJpaRepository.getNative(pageable);
+        Page<Item> map = all.map(i -> itemPersistenceMapper.toDomain(i));
+
+        Assertions.assertEquals(20, map.getContent().size());
+        for(Item item : map.getContent()){
+            System.out.println(item.getSku() +" & "+item.getName());
+        }
+
+    }
+
 
 
 

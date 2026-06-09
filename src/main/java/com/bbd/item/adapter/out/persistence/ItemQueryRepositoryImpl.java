@@ -23,42 +23,7 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public Page<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
 
-
-
-
-        List<ItemJpaEntity> content = jpaQueryFactory
-                .select(itemJpaEntity)
-                .from(itemJpaEntity)
-                .where(
-                        categoryEq(getItemFilterCommand.getCategory()),
-                        activeEq(getItemFilterCommand.getActive()),
-                        unitEq(getItemFilterCommand.getUnit()),
-                        priceGoe(getItemFilterCommand.getMinPrice()),
-                        priceLoe(getItemFilterCommand.getMaxPrice())
-                )
-
-
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        Long total = jpaQueryFactory
-                .select(itemJpaEntity.count())
-                .from(itemJpaEntity)
-                .where(
-                        categoryEq(getItemFilterCommand.getCategory()),
-                        activeEq(getItemFilterCommand.getActive()),
-                        unitEq(getItemFilterCommand.getUnit()),
-                        priceGoe(getItemFilterCommand.getMinPrice()),
-                        priceLoe(getItemFilterCommand.getMaxPrice())
-                )
-                .fetchOne();
-
-        return new PageImpl<>(content, pageable, total == null ? 0 : total);
-    }
 
     @Override
     public Page<ItemJpaEntity> filterName(Pageable pageable, String name) {
@@ -157,6 +122,34 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                 itemJpaEntity.name.asc(),
                 itemJpaEntity.sku.asc()
         };
+    }
+
+    // 기존 필터 (성능 무거움)
+    @Override
+    public Page<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+
+        List<ItemJpaEntity> content = jpaQueryFactory
+                .select(itemJpaEntity)
+                .from(itemJpaEntity)
+                .where(
+                        categoryEq(getItemFilterCommand.getCategory()),
+                        activeEq(getItemFilterCommand.getActive())
+                )
+                .orderBy(getOrderSpecifiers(pageable)) // sort ,  direction 꺼내기
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = jpaQueryFactory
+                .select(itemJpaEntity.count())
+                .from(itemJpaEntity)
+                .where(
+                        categoryEq(getItemFilterCommand.getCategory()),
+                        activeEq(getItemFilterCommand.getActive())
+                )
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total == null ? 0 : total);
     }
 
 }

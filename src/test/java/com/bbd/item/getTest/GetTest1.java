@@ -93,7 +93,7 @@ public class GetTest1 {
         Pageable pageable = PageRequest.of(0, 10);
 
         // given
-        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(Category.ENGINE_OIL, true, Unit.EA, 10000, 30000);
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(null, null, null);
 
         // when
         Page<Item> page = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
