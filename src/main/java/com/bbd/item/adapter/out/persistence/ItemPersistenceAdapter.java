@@ -44,9 +44,8 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
 
     @Override
     public Optional<Item> findBySku(String sku) {
-        Optional<Item> item = itemJpaRepository.findById(sku)
+        return itemJpaRepository.findById(sku)
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
-        return item;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
 
 
     @Override
-    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+    public Page<Item> getFilterV2(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
 
 
         // 1. 기본 목록 조회 -> Native Query WITH 사용하기
@@ -71,11 +70,19 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
+
     @Override
     public Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
         return itemJpaRepository.filterName(pageable, getNameCommand.getName())
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
+
+    // 느린 버전 필터
+    @Override
+    public Page<Item> getFilterV1(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+        return itemJpaRepository.filterV1(pageable, getItemFilterCommand)
+                .map( itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
+    }
 
 }

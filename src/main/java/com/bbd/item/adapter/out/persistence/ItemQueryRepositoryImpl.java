@@ -6,6 +6,8 @@ import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Unit;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.bbd.item.adapter.out.persistence.QItemJpaEntity.*;
 
@@ -23,6 +28,61 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Override
+    public Page<ItemJpaEntity> filterV2(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+
+
+        // 1. 해당 필터를 통해 sku 리스트 조회
+        List<String> skuList = jpaQueryFactory.select(itemJpaEntity.sku)
+                .from(itemJpaEntity)
+                .where(
+                        categoryEq(getItemFilterCommand.getCategory()),
+                        nameContains(getItemFilterCommand.getName()),
+                        activeEq(getItemFilterCommand.getActive())
+                )
+                .orderBy(getOrderSpecifiers(pageable))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+
+        // 2. total count 조회
+        Long total = jpaQueryFactory
+                .select(itemJpaEntity.count()) // 카운트
+                .from(itemJpaEntity)
+                .where(
+                        categoryEq(getItemFilterCommand.getCategory()),
+                        nameContains(getItemFilterCommand.getName()),
+                        activeEq(getItemFilterCommand.getActive())
+                )
+                .fetchOne();
+
+        long totalCount = total == null ? 0 : total;
+
+        // 3. 해당 조건이 없다면 빈 배열 반환
+        if(skuList.isEmpty()){
+            return new PageImpl<>(List.of(), pageable,totalCount);
+        }
+
+        // 4. where in 쿼리를 통해 sku -> ItemJpaEntity 조회
+        List<ItemJpaEntity> itemList = jpaQueryFactory
+                .select(itemJpaEntity)
+                .from(itemJpaEntity)
+                .where(itemJpaEntity.sku.in(skuList))
+                .fetch();
+
+        // 5. itemList 는 정렬이 없기 때문에 sku 기준으로 Map 으로 변경
+        Map<String, ItemJpaEntity> itemMap = itemList.stream()
+                .collect(Collectors.toMap(item -> item.getSku(), Function.identity()));
+
+        // 6. 정렬을 유지하기 위한 skuList 기준으로 매핑
+        List<ItemJpaEntity> items = skuList.stream()
+                .map(sku -> itemMap.get(sku))
+                .toList();
+
+        // 결과 반환
+        return new PageImpl<>(items, pageable, totalCount);
+    }
 
 
     @Override
@@ -80,6 +140,13 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     // Sort & 방향 꺼내주기
     // OrderSpecifier : Querydsl에서 ORDER BY 조건을 표현하는 클래스
     private OrderSpecifier<?>[] getOrderSpecifiers(Pageable pageable) {
+
+        // 이름이 정렬 기준이라면 item name 이 한글이기 떄문에 한글기준 정렬 설정
+//        StringExpression nameKo = Expressions.stringTemplate(
+//                "{0} COLLATE \"ko-KR-x-icu\"",
+//                itemJpaEntity.name
+//        );
+
         // 1. sort 기준, 방향 꺼내기
         Sort.Order order = pageable.getSort()
                 .stream()
@@ -126,7 +193,7 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     // 기존 필터 (성능 무거움)
     @Override
-    public Page<ItemJpaEntity> filter(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
+    public Page<ItemJpaEntity> filterV1(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
 
         List<ItemJpaEntity> content = jpaQueryFactory
                 .select(itemJpaEntity)
@@ -151,5 +218,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
         return new PageImpl<>(content, pageable, total == null ? 0 : total);
     }
+
 
 }

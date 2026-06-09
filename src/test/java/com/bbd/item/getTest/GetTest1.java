@@ -96,7 +96,7 @@ public class GetTest1 {
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(null, null, null);
 
         // when
-        Page<Item> page = itemUseCaseGet.getFilter(pageable, getItemFilterCommand);
+        Page<Item> page = itemUseCaseGet.getFilterV1(pageable, getItemFilterCommand);
 
         // then
         Assertions.assertEquals(10, page.getContent().size());
@@ -118,6 +118,8 @@ public class GetTest1 {
 
 
     }
+
+
 
 
 }

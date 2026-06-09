@@ -14,14 +14,14 @@ public interface ItemJpaRepository extends JpaRepository<ItemJpaEntity, String>,
                     WITH page_keys AS (
                         SELECT i.sku, i.name
                         FROM bbd2.item i
-                        ORDER BY i.name COLLATE "ko-KR-x-icu" ASC, i.sku ASC
+                        ORDER BY i.name ASC, i.sku ASC
                         OFFSET :#{#pageable.offset}
                         LIMIT :#{#pageable.pageSize}
                     )
                     SELECT i.*
                     FROM page_keys pk
                     JOIN bbd2.item i ON i.sku = pk.sku
-                    ORDER BY pk.name COLLATE "ko-KR-x-icu" ASC, pk.sku ASC
+                    ORDER BY pk.name ASC, pk.sku ASC
                     """,
             countQuery = """
                     SELECT COUNT(*)

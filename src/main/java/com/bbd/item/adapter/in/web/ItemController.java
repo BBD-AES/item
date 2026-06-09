@@ -141,7 +141,26 @@ public class ItemController {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
-        Page<ItemResponse> map = itemUseCaseGet.getFilter(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
+        Page<ItemResponse> map = itemUseCaseGet.getFilterV2(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
+        PageResponse pageResponse = PageResponse.from(map);
+        return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
+    }
+
+    @Operation(summary = "필터 조회API (category & name & active 필터), (정렬은 이름 & sku 만 가능)")
+    @GetMapping("/v1")
+    public ResponseEntity<PageResponse> getItemsFilterV1(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "20") Integer size,
+            @RequestParam(required = false, defaultValue = "name") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) Boolean active
+    ) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
+        Page<ItemResponse> map = itemUseCaseGet.getFilterV1(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
         PageResponse pageResponse = PageResponse.from(map);
         return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
     }

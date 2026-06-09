@@ -15,21 +15,16 @@ public class SwaggerConfig {
                         .description("Item Application API Documentation")
                         .version("v1.0"))
                 .addServersItem(new Server()
-                        .url("http://localhost:8082")
-                        .description("Local Direct"))
-
-                .addServersItem(new Server()
                         .url("http://localhost:8082/item")
-                        .description("local docker compose 전용"))
+                        .description("Local 내 컴퓨터"))
 
                 .addServersItem(new Server()
-                        .url("http://http://100.73.142.41/item")
+                        .url("http://100.73.142.41/item")
                         .description("강의실 노트북"))
 
                 .addServersItem(new Server()
                         .url("http://192.168.200.220/item")
                         .description("Nginx"));
-
 
     }
 }
