@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.out.persistence;
 
 
+import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.domain.model.Category;
 import com.bbd.item.domain.model.Unit;
@@ -101,6 +102,15 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public List<ItemJpaEntity> findAllIntSku(ItemListSku itemListSku) {
+        return jpaQueryFactory
+                .select(itemJpaEntity)
+                .from(itemJpaEntity)
+                .where(itemJpaEntity.sku.in(itemListSku.getSkuList()))
+                .fetch();
     }
 
     // 이름 동적 쿼리

@@ -1,5 +1,6 @@
 package com.bbd.item.application.port.out;
 
+import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.domain.model.Item;
@@ -31,4 +32,8 @@ public interface ItemPersistencePort {
 
     // 이름 조회 (포함)
     Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
+
+    // Sku 포함되면 전부 조회
+    List<Item> getAllInSku(ItemListSku itemListSku);
+
 }

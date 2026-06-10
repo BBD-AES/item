@@ -1,5 +1,6 @@
 package com.bbd.item.application.service;
 
+import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
@@ -47,5 +48,10 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     @Override
     public Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand) {
         return itemPersistencePort.getName(pageable, getNameCommand);
+    }
+
+    @Override
+    public List<Item> getAllInSku(ItemListSku itemListSku) {
+        return itemPersistencePort.getAllInSku(itemListSku);
     }
 }

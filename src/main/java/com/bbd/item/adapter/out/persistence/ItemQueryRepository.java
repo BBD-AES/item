@@ -1,5 +1,6 @@
 package com.bbd.item.adapter.out.persistence;
 
+import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,5 +15,7 @@ public interface ItemQueryRepository {
     Page<ItemJpaEntity> filterV1(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
 
     Page<ItemJpaEntity> filterName(Pageable pageable, String name);
+
+    List<ItemJpaEntity> findAllIntSku(ItemListSku itemListSku);
 
 }

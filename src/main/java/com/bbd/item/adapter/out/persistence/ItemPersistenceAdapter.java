@@ -1,5 +1,6 @@
 package com.bbd.item.adapter.out.persistence;
 
+import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
@@ -85,4 +86,11 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 .map( itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
     }
 
+    @Override
+    public List<Item> getAllInSku(ItemListSku itemListSku) {
+        return itemJpaRepository.findAllIntSku(itemListSku)
+                .stream()
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
+                .toList();
+    }
 }
