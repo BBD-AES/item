@@ -2,7 +2,7 @@ package com.bbd.item.getTest;
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
-import com.bbd.item.domain.model.Item;
+import com.bbd.item.global.error.ApiException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @SpringBootTest
 public class GetTest3 {
-    
+
     @Autowired
     private ItemUseCaseGet itemUseCaseGet;
 
@@ -27,21 +27,12 @@ public class GetTest3 {
         list.add("INT-0736572");
         list.add("WIPER-0736573");
         list.add("ACC-0736574");
-        list.add("ENGOIL-0736575");
+        list.add("ㅇENGOIL-0736575");
         list.add("FILTER-0736576");
-
         ItemListSku itemListSku = new ItemListSku(list);
 
-        // when
-        List<Item> allInSku = itemUseCaseGet.getAllInSku(itemListSku);
-
         // then
-        Assertions.assertEquals(5, allInSku.size());
-        
-        for(Item item:allInSku){
-            System.out.println(item.getName());
-        }
-        
+        Assertions.assertThrows(ApiException.class, () -> itemUseCaseGet.getAllInSku(itemListSku));
 
     }
 

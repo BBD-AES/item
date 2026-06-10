@@ -52,6 +52,10 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
 
     @Override
     public List<Item> getAllInSku(ItemListSku itemListSku) {
-        return itemPersistencePort.getAllInSku(itemListSku);
+        List<Item> allInSku = itemPersistencePort.getAllInSku(itemListSku);
+        if(itemListSku.getSkuList().size() !=  allInSku.size()) {
+            throw new ApiException(ErrorCode.ITEM_SKU_NOTFOUND);
+        }
+        return allInSku;
     }
 }
