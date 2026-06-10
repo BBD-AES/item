@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdatePriceItemRequest {
 
+
+
     private Integer unitPrice;
 
 }

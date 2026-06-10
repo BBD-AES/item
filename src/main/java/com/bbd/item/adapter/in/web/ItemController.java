@@ -75,7 +75,6 @@ public class ItemController {
      * PATCH 구분선
      * ======================================
      */
-
     @Operation(summary = "상품 단가 수정 API (권한 체크 필요)")
     @PatchMapping("/api/v1/items/{sku}/price")
     public ResponseEntity<Void> updatePrice(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdatePriceItemRequest req) {
@@ -84,22 +83,6 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-//    @Operation(summary = "상품 이름 수정 API / (사용 중지)")
-//    @PatchMapping("/{sku}/name")
-//    public ResponseEntity<Void> updateName(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateNameItemRequest req) {
-//        UpdateNameCommand updateNameCommand = new UpdateNameCommand(sku, req.getName());
-//        itemUseCaseUpdate.updateName(updateNameCommand);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//    }
-
-
-//    @Operation(summary = "상품 단가 및 이름 수정 API (사용 중지)")
-//    @PatchMapping("/{sku}")
-//    public ResponseEntity<Void> update(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateItemRequest req) {
-//        UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
-//        itemUseCaseUpdate.update(updateCommand);
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
 
     /**
      * GET 구분선
@@ -143,6 +126,23 @@ public class ItemController {
         PageResponse pageResponse = PageResponse.from(map);
         return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
     }
+
+//    @Operation(summary = "상품 이름 수정 API / (사용 중지)")
+//    @PatchMapping("/{sku}/name")
+//    public ResponseEntity<Void> updateName(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateNameItemRequest req) {
+//        UpdateNameCommand updateNameCommand = new UpdateNameCommand(sku, req.getName());
+//        itemUseCaseUpdate.updateName(updateNameCommand);
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//    }
+
+
+//    @Operation(summary = "상품 단가 및 이름 수정 API (사용 중지)")
+//    @PatchMapping("/{sku}")
+//    public ResponseEntity<Void> update(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdateItemRequest req) {
+//        UpdateCommand updateCommand = new UpdateCommand(sku, req.getName(), req.getUnitPrice());
+//        itemUseCaseUpdate.update(updateCommand);
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
 
 //    @Operation(summary = "전체 조회 API")
 //    @GetMapping("/api/v1/items/all")
