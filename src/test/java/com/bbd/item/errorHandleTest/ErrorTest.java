@@ -15,10 +15,10 @@ public class ErrorTest {
     public void test1() {
 
         Assertions.assertThatThrownBy(() -> {
-                    throw new ApiException(ErrorCode.ITEM_NOT_FOUND);
+                    throw new ApiException(ErrorCode.TEST_ERROR);
                 })
                 .isInstanceOf(ApiException.class)
-                .hasMessageContaining("상품을 찾을 수 없습니다.");
+                .hasMessageContaining("찾을 수 없습니다.");
 
     }
 

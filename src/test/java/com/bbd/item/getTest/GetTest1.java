@@ -110,10 +110,10 @@ public class GetTest1 {
         Pageable pageable = PageRequest.of(0, 10);
 
         // given
-        GetNameCommand getNameCommand = new GetNameCommand("엔진");
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand("엔진", null, null);
 
         // when
-        Page<Item> pageItem = itemUseCaseGet.getName(pageable, getNameCommand);
+        Page<Item> pageItem = itemUseCaseGet.getFilterV2(pageable, getItemFilterCommand);
 
 
 
