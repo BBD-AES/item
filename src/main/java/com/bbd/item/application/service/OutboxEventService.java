@@ -20,6 +20,11 @@ public class OutboxEventService {
         // 1. Event 상태가 PENDING 인 이벤트 리스트로 조회
         List<OutboxEvent> outboxEvents = outboxEventPort.getOutboxEvents(OutboxStatus.PENDING);
 
+        // 바꿀 것이 없다면 아래 로직 실행 x
+        if(outboxEvents.isEmpty()){
+            return;
+        }
+
         // 2. Outbox Pattern Processor 활용
         for(OutboxEvent outboxEvent : outboxEvents) {
             outboxEventProcessor.process(outboxEvent);
