@@ -1,8 +1,8 @@
 package com.bbd.item.getTest;
 
-import com.bbd.item.adapter.out.persistence.ItemJpaEntity;
-import com.bbd.item.adapter.out.persistence.ItemJpaRepository;
-import com.bbd.item.adapter.out.persistence.ItemPersistenceMapper;
+import com.bbd.item.adapter.out.persistence.item.ItemJpaEntity;
+import com.bbd.item.adapter.out.persistence.item.ItemJpaRepository;
+import com.bbd.item.adapter.out.persistence.item.ItemPersistenceMapper;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.domain.model.item.Item;

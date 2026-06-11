@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.out.persistence;
+package com.bbd.item.adapter.out.persistence.item;
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;

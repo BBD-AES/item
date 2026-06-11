@@ -1,6 +1,6 @@
 package com.bbd.item.updateTest;
 
-import com.bbd.item.adapter.out.persistence.ItemJpaRepository;
+import com.bbd.item.adapter.out.persistence.item.ItemJpaRepository;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;

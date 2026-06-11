@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.out.persistence;
+package com.bbd.item.adapter.out.persistence.item;
 
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.SourcingType;

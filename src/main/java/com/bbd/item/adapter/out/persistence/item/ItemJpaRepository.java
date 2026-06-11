@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.out.persistence;
+package com.bbd.item.adapter.out.persistence.item;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

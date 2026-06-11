@@ -5,7 +5,9 @@ import com.bbd.item.application.port.in.dto.UpdateCommand;
 import com.bbd.item.application.port.in.dto.UpdateNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
+import com.bbd.item.application.port.out.OutboxEventPort;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.outbox.OutboxEvent;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
     private final ItemPersistencePort itemPersistencePort;
+    private final OutboxEventPort outboxEventPort;
 
     @Override
     public void updatePrice(UpdatePriceCommand updatePriceCommand) {
-        // TODO : 사용자 권한에 따라서 생성 못하게 막아야함 (애초에 시큐리티단에서 1차 검증하고옴)
+
+        // TODO : SELECT -> UPDATE -> SAVE 에서 UPDATE 쿼리 1개로 처리
 
         // 이미 존재하는지 확인
         Item item = itemPersistencePort.findBySku(updatePriceCommand.getSku())
@@ -33,6 +37,10 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
         // 저장
         itemPersistencePort.save(item);
+
+        // 이벤트 DB 저장
+        OutboxEvent outboxEvent = OutboxEvent.itemPriceChanged(item.getSku(), item.getUnitPrice());
+        outboxEventPort.save(outboxEvent);
     }
 
 

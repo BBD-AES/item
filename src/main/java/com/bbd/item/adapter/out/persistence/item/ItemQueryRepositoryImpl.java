@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.out.persistence;
+package com.bbd.item.adapter.out.persistence.item;
 
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
@@ -20,7 +20,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.bbd.item.adapter.out.persistence.QItemJpaEntity.*;
+import static com.bbd.item.adapter.out.persistence.item.QItemJpaEntity.itemJpaEntity;
+
 
 @RequiredArgsConstructor
 public class ItemQueryRepositoryImpl implements ItemQueryRepository {
