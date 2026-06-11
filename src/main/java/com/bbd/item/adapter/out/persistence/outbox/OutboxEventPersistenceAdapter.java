@@ -18,7 +18,6 @@ public class OutboxEventPersistenceAdapter implements OutboxEventPort {
     // 변경된 상태 저장
     @Override
     public void save(OutboxEvent outBoxEvent) {
-
         outboxEventJpaRepository.save(outboxEventPersistenceMapper.toEntity(outBoxEvent));
     }
 
