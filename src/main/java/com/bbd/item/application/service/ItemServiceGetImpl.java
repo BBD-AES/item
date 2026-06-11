@@ -5,7 +5,7 @@ import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
-import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.item.Item;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,7 @@ import com.bbd.item.adapter.out.persistence.ItemJpaRepository;
 import com.bbd.item.adapter.out.persistence.ItemPersistenceMapper;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
-import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.item.Item;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

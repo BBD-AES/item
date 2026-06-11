@@ -4,7 +4,7 @@ package com.bbd.item.application.service;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
-import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.item.Item;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;

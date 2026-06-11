@@ -3,12 +3,10 @@ package com.bbd.item.adapter.out.persistence;
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
-import com.bbd.item.domain.model.Category;
-import com.bbd.item.domain.model.Unit;
+import com.bbd.item.domain.model.item.Category;
+import com.bbd.item.domain.model.item.Unit;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

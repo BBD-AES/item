@@ -1,8 +1,8 @@
 package com.bbd.item.adapter.out.persistence;
 
-import com.bbd.item.domain.model.Category;
-import com.bbd.item.domain.model.SourcingType;
-import com.bbd.item.domain.model.Unit;
+import com.bbd.item.domain.model.item.Category;
+import com.bbd.item.domain.model.item.SourcingType;
+import com.bbd.item.domain.model.item.Unit;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

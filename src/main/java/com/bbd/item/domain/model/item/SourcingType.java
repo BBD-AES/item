@@ -1,4 +1,4 @@
-package com.bbd.item.domain.model;
+package com.bbd.item.domain.model.item;
 
 import lombok.Getter;
 

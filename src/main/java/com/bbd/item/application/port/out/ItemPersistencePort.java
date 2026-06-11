@@ -3,7 +3,7 @@ package com.bbd.item.application.port.out;
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
-import com.bbd.item.domain.model.Item;
+import com.bbd.item.domain.model.item.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

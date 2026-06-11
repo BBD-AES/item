@@ -1,8 +1,8 @@
 package com.bbd.item.application.port.in.dto;
 
-import com.bbd.item.domain.model.Category;
-import com.bbd.item.domain.model.SourcingType;
-import com.bbd.item.domain.model.Unit;
+import com.bbd.item.domain.model.item.Category;
+import com.bbd.item.domain.model.item.SourcingType;
+import com.bbd.item.domain.model.item.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,9 @@
 package com.bbd.item.adapter.in.web.dto;
 
 
-import com.bbd.item.domain.model.Category;
-import com.bbd.item.domain.model.Item;
-import com.bbd.item.domain.model.SourcingType;
-import com.bbd.item.domain.model.Unit;
+import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
+import com.bbd.item.domain.model.item.Unit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

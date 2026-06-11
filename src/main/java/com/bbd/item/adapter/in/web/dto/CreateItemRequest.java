@@ -1,8 +1,8 @@
 package com.bbd.item.adapter.in.web.dto;
 
-import com.bbd.item.domain.model.Category;
-import com.bbd.item.domain.model.SourcingType;
-import com.bbd.item.domain.model.Unit;
+import com.bbd.item.domain.model.item.Category;
+import com.bbd.item.domain.model.item.SourcingType;
+import com.bbd.item.domain.model.item.Unit;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
