@@ -3,6 +3,7 @@ package com.bbd.item.adapter.out.persistence.item;
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
+import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
@@ -93,4 +94,10 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
                 .toList();
     }
+
+    @Override
+    public boolean changePrice(UpdatePriceCommand updatePriceCommand) {
+        return itemJpaRepository.changePrice(updatePriceCommand);
+    }
+
 }

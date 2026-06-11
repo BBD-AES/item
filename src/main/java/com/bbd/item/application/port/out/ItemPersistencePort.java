@@ -3,6 +3,7 @@ package com.bbd.item.application.port.out;
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
+import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,5 +37,7 @@ public interface ItemPersistencePort {
     // Sku 포함되면 전부 조회
     List<Item> getAllInSku(ItemListSku itemListSku);
 
+    // 아이템 가격 변경 원자 처리
+    boolean changePrice(UpdatePriceCommand updatePriceCommand);
 
 }

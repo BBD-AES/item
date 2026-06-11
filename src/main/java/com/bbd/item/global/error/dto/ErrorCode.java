@@ -47,6 +47,7 @@ public enum ErrorCode {
     ITEM_FORBIDDEN_ROLE(HttpStatus.FORBIDDEN, "I016", "상품을 관리할 권한이 없습니다."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "I017", "요청 값이 올바르지 않습니다."),
     ITEM_SKU_NOTFOUND(HttpStatus.BAD_REQUEST, "I018", "존재하지 않는 SKU가 포함되어있습니다."),
+    ITEM_UPDATE_PRICE_FAIL(HttpStatus.BAD_REQUEST, "I019", "요청한 SKU를 통한 아이템 가격 변경이 실패하였습니다."),
 
     ;
 

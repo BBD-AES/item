@@ -3,6 +3,7 @@ package com.bbd.item.adapter.out.persistence.item;
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
+import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Unit;
 import com.querydsl.core.types.OrderSpecifier;
@@ -28,6 +29,10 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+
+    /**
+     * 아이템 조회 쿼리
+     */
     @Override
     public Page<ItemJpaEntity> filterV2(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
 
@@ -60,8 +65,8 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
         long totalCount = total == null ? 0 : total;
 
         // 3. 해당 조건이 없다면 빈 배열 반환
-        if(skuList.isEmpty()){
-            return new PageImpl<>(List.of(), pageable,totalCount);
+        if (skuList.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, totalCount);
         }
 
         // 4. where in 쿼리를 통해 sku -> ItemJpaEntity 조회
@@ -228,5 +233,20 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
         return new PageImpl<>(content, pageable, total == null ? 0 : total);
     }
 
+
+    /**
+     * 아이템 변경 원자 처리
+     */
+    @Override
+    public boolean changePrice(UpdatePriceCommand updatePriceCommand) {
+
+        long execute = jpaQueryFactory
+                .update(itemJpaEntity)
+                .set(itemJpaEntity.unitPrice, updatePriceCommand.getUnitPrice())
+                .where(itemJpaEntity.sku.eq(updatePriceCommand.getSku()))
+                .execute();
+
+        return execute == 1L;
+    }
 
 }

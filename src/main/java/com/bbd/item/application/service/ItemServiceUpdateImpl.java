@@ -26,20 +26,16 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
     @Override
     public void updatePrice(UpdatePriceCommand updatePriceCommand) {
 
-        // TODO : SELECT -> UPDATE -> SAVE 에서 UPDATE 쿼리 1개로 처리
+        // 아이템 가격 변경
+        boolean updated = itemPersistencePort.changePrice(updatePriceCommand);
 
-        // 이미 존재하는지 확인
-        Item item = itemPersistencePort.findBySku(updatePriceCommand.getSku())
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
-
-        // 존재한다면 가격 업데이트
-        item.changePrice(updatePriceCommand.getUnitPrice());
-
-        // 저장
-        itemPersistencePort.save(item);
+        // 업데이트 실패 시
+        if(!updated){
+            throw new ApiException(ErrorCode.ITEM_UPDATE_PRICE_FAIL);
+        }
 
         // 이벤트 DB 저장
-        OutboxEvent outboxEvent = OutboxEvent.itemPriceChanged(item.getSku(), item.getUnitPrice());
+        OutboxEvent outboxEvent = OutboxEvent.itemPriceChanged(updatePriceCommand.getSku(), updatePriceCommand.getUnitPrice());
         outboxEventPort.save(outboxEvent);
     }
 
