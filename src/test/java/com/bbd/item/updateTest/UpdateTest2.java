@@ -25,7 +25,7 @@ public class UpdateTest2 {
     public void 테스트1() throws Exception{
 
         // given
-        UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand("AC-0580313", 69000);
+        UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand("AC-0580313", 68000);
 
         // when
         itemServiceUpdateImpl.updatePrice(updatePriceCommand);
@@ -33,7 +33,7 @@ public class UpdateTest2 {
         // then
         Item item = itemServiceGetImpl.getItem("AC-0580313");
 
-        Assertions.assertEquals(69000, item.getUnitPrice());
+        Assertions.assertEquals(68000, item.getUnitPrice());
 
     }
 

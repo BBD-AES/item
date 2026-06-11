@@ -46,8 +46,10 @@ public enum ErrorCode {
     ITEM_UNIT_INVALID(HttpStatus.BAD_REQUEST, "I015", "알 수 없는 상품 단위입니다."),
     ITEM_FORBIDDEN_ROLE(HttpStatus.FORBIDDEN, "I016", "상품을 관리할 권한이 없습니다."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "I017", "요청 값이 올바르지 않습니다."),
-    ITEM_SKU_NOTFOUND(HttpStatus.BAD_REQUEST, "I018", "존재하지 않는 SKU가 포함되어있습니다."),
-    ITEM_UPDATE_PRICE_FAIL(HttpStatus.BAD_REQUEST, "I019", "요청한 SKU를 통한 아이템 가격 변경이 실패하였습니다."),
+    ITEM_SKU_NOTFOUND(HttpStatus.BAD_REQUEST, "I018", "존재하지 않는 SKU가 포함되어 있습니다."),
+    ITEM_UPDATE_PRICE_FAIL(HttpStatus.CONFLICT, "I019", "상품 가격 변경에 실패했습니다."),
+    ITEM_EVENT_NOT_PUBLISH(HttpStatus.INTERNAL_SERVER_ERROR, "I020", "가격 변경 이벤트 발행에 실패했습니다."),
+    OUTBOX_EVENT_CREATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I021", "Outbox 이벤트 생성에 실패했습니다.")
 
     ;
 

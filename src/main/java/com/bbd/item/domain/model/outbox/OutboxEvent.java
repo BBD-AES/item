@@ -1,5 +1,6 @@
 package com.bbd.item.domain.model.outbox;
 
+import com.bbd.item.adapter.out.kafka.ItemKafkaRequest;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -45,19 +46,16 @@ public class OutboxEvent {
         this.publishedAt = publishedAt;
     }
 
-    public static OutboxEvent itemPriceChanged(String sku, Integer unitPrice) {
+    public static OutboxEvent itemPriceChanged(
+            String eventId,
+            String sku,
+            String payload
+    ) {
         LocalDateTime now = LocalDateTime.now();
 
-        String payload = """
-                {
-                    "sku": "%s",
-                    "unitPrice": %d
-                }
-                """.formatted(sku, unitPrice);
-
         return new OutboxEvent(
-                UUID.randomUUID().toString(),
-                "ITEM", //
+                eventId,
+                "item",
                 sku,
                 OutboxEventType.ITEM_PRICE_CHANGED,
                 payload,

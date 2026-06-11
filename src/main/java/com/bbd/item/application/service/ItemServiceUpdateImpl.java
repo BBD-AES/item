@@ -1,5 +1,6 @@
 package com.bbd.item.application.service;
 
+import com.bbd.item.application.factory.OutboxEventFactory;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.UpdateCommand;
 import com.bbd.item.application.port.in.dto.UpdateNameCommand;
@@ -22,6 +23,7 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
 
     private final ItemPersistencePort itemPersistencePort;
     private final OutboxEventPort outboxEventPort;
+    private final OutboxEventFactory outboxEventFactory;
 
     @Override
     public void updatePrice(UpdatePriceCommand updatePriceCommand) {
@@ -35,7 +37,7 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
         }
 
         // 이벤트 DB 저장
-        OutboxEvent outboxEvent = OutboxEvent.itemPriceChanged(updatePriceCommand.getSku(), updatePriceCommand.getUnitPrice());
+        OutboxEvent outboxEvent = outboxEventFactory.itemPriceChanged(updatePriceCommand.getSku(), updatePriceCommand.getUnitPrice());
         outboxEventPort.save(outboxEvent);
     }
 
