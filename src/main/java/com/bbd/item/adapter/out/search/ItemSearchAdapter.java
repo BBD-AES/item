@@ -3,9 +3,13 @@ package com.bbd.item.adapter.out.search;
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.adapter.out.search.document.ItemSearchDocument;
 import com.bbd.item.adapter.out.search.repository.ItemSearchRepository;
+import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -70,4 +74,47 @@ public class ItemSearchAdapter implements ItemSearchPort {
                 .toList();
     }
 
+    @Override
+    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand command) {
+        NativeQuery query = NativeQuery.builder()
+                .withQuery(q -> q.bool(b -> {
+                    if (command.getName() != null && !command.getName().isBlank()) {
+                        b.must(m -> m.match(mm -> mm
+                                .field("name.ngram")
+                                .query(command.getName())
+                        ));
+                    }
+
+                    if (command.getCategory() != null) {
+                        b.filter(f -> f.term(t -> t
+                                .field("category")
+                                .value(command.getCategory().name())
+                        ));
+                    }
+
+                    if (command.getActive() != null) {
+                        b.filter(f -> f.term(t -> t
+                                .field("active")
+                                .value(command.getActive())
+                        ));
+                    }
+                    return b;
+                }))
+                .withPageable(pageable)
+                .build();
+
+        var searchHits = elasticsearchOperations.search(query, ItemSearchDocument.class);
+
+        List<Item> content = searchHits.getSearchHits()
+                .stream()
+                .map(SearchHit::getContent)
+                .map(ItemSearchDocument::toDomain)
+                .toList();
+
+        return new PageImpl<>(
+                content,
+                pageable,
+                searchHits.getTotalHits()
+        );
+    }
 }

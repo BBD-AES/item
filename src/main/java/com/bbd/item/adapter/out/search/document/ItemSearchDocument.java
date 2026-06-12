@@ -1,6 +1,9 @@
 package com.bbd.item.adapter.out.search.document;
 
+import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
+import com.bbd.item.domain.model.item.Unit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +44,19 @@ public class ItemSearchDocument {
                 item.getUnitPrice(),
                 item.isActive(),
                 item.getSourcingType().name()
+        );
+    }
+
+    public static Item toDomain(ItemSearchDocument itemSearchDocument) {
+        return new Item(
+                itemSearchDocument.getSku(),
+                itemSearchDocument.getName(),
+                Category.valueOf(itemSearchDocument.getCategory()),
+                Unit.valueOf(itemSearchDocument.getUnit()),
+                itemSearchDocument.getSafetyStock(),
+                itemSearchDocument.getUnitPrice(),
+                itemSearchDocument.isActive(),
+                SourcingType.valueOf(itemSearchDocument.getSourcingType())
         );
     }
 

@@ -2,12 +2,14 @@ package com.bbd.item.application.service;
 
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.application.port.in.ItemSearchUseCase;
+import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemBulkReadPort;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,5 +64,10 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
     @Override
     public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
         return itemSearchPort.autocomplete(keyword, size);
+    }
+
+    @Override
+    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
+        return itemSearchPort.getFilter(pageable, command);
     }
 }
