@@ -1,5 +1,6 @@
 package com.bbd.item.application.service;
 
+import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.application.port.in.ItemSearchUseCase;
 import com.bbd.item.application.port.out.ItemBulkReadPort;
 import com.bbd.item.application.port.out.ItemSearchPort;
@@ -58,4 +59,8 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
 
     }
 
+    @Override
+    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
+        return itemSearchPort.autocomplete(keyword, size);
+    }
 }
