@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Document(indexName = "bbd-items")
+@Document(indexName = "bbd-items", createIndex = false)
 public class ItemSearchDocument {
 
     @Id
@@ -43,4 +43,5 @@ public class ItemSearchDocument {
                 item.getSourcingType().name()
         );
     }
+
 }

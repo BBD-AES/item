@@ -90,7 +90,6 @@ public class ItemController {
      * GET 구분선
      * ======================================
      */
-
     @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/api/v1/items/{sku}")
     public ResponseEntity<ItemResponse> getItem(@NotBlank @PathVariable String sku) {

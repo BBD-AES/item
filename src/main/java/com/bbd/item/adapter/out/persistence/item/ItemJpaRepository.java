@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ItemJpaRepository extends JpaRepository<ItemJpaEntity, String>, ItemQueryRepository  {
 
@@ -30,5 +32,9 @@ public interface ItemJpaRepository extends JpaRepository<ItemJpaEntity, String>,
             nativeQuery = true
     )
     Page<ItemJpaEntity> getNative(Pageable pageable);
+
+    List<ItemJpaEntity> findAllByOrderBySkuAsc(Pageable pageable);
+
+    List<ItemJpaEntity> findBySkuGreaterThanOrderBySkuAsc(String sku, Pageable pageable);
 
 }

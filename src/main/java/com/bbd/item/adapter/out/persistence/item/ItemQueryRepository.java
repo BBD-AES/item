@@ -22,4 +22,5 @@ public interface ItemQueryRepository {
     // 아이템 변경 원자처리
     boolean changePrice(UpdatePriceCommand updatePriceCommand);
 
+
 }

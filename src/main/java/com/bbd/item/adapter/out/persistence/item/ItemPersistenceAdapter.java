@@ -4,6 +4,7 @@ import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
+import com.bbd.item.application.port.out.ItemBulkReadPort;
 import com.bbd.item.application.port.out.ItemPersistencePort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.Optional;
  */
 @Component // 빈으로 등록해야 어댑터도 사용가능
 @RequiredArgsConstructor
-public class ItemPersistenceAdapter implements ItemPersistencePort {
+public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkReadPort {
 
     private final ItemJpaRepository itemJpaRepository;
     private final ItemPersistenceMapper itemPersistenceMapper;
@@ -100,4 +101,19 @@ public class ItemPersistenceAdapter implements ItemPersistencePort {
         return itemJpaRepository.changePrice(updatePriceCommand);
     }
 
+    @Override
+    public List<Item> findFirstBatch(int size) {
+        return itemJpaRepository.findAllByOrderBySkuAsc(Pageable.ofSize(size))
+                .stream()
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
+                .toList();
+    }
+
+    @Override
+    public List<Item> findNextBatch(String lastSku, int size) {
+        return itemJpaRepository.findBySkuGreaterThanOrderBySkuAsc(lastSku, Pageable.ofSize(size))
+                .stream()
+                .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
+                .toList();
+    }
 }
