@@ -16,6 +16,15 @@ java {
 
 repositories {
     mavenCentral()
+
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/BBD-AES/bbd-security-core")
+        credentials {
+            username = findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -54,6 +63,11 @@ dependencies {
     // Jackson (Object Mapper 사용)
     implementation 'org.springframework.boot:spring-boot-starter-jackson'
 
+    // Siwon's security core
+    implementation 'com.bbd:bbd-security-core:0.0.1'
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
