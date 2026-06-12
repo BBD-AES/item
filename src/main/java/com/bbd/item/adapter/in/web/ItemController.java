@@ -9,6 +9,8 @@ import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.securitycore.adapter.in.annotation.RequireRole;
+import com.bbd.securitycore.domain.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -51,6 +53,8 @@ public class ItemController {
      * 4. 이름 조회 API (pageable)
      */
 
+
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF})
     @Operation(summary = "생성 API (권한 체크)")
     @PostMapping("/api/v1/items")
     @Valid
