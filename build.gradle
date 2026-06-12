@@ -63,11 +63,11 @@ dependencies {
     // Jackson (Object Mapper 사용)
     implementation 'org.springframework.boot:spring-boot-starter-jackson'
 
-    // Siwon's security core
-    implementation 'com.bbd:bbd-security-core:0.0.1'
-
-    // Redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    // Siwon's security core
+//    implementation 'com.bbd:bbd-security-core:0.0.1'
+//
+//    // Redis
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

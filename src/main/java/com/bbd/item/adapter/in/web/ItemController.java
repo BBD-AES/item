@@ -9,8 +9,6 @@ import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
-import com.bbd.securitycore.adapter.in.annotation.RequireRole;
-import com.bbd.securitycore.domain.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
