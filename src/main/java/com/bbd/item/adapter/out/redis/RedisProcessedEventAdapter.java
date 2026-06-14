@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class RedisProcessedEventAdapter implements ProcessedEventPort {
 

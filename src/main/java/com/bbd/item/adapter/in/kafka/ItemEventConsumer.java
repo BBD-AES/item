@@ -4,8 +4,6 @@ package com.bbd.item.adapter.in.kafka;
 import com.bbd.item.application.port.in.SyncItemSearchIndexUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -14,20 +12,19 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class ItemEventConsumer {
 
     private static final String ITEM_PRICE_CHANGED_TOPIC = "item.price.changed";
-    private final SyncItemSearchIndexUseCase syncItemSearchIndexUseCase;
+//    private final SyncItemSearchIndexUseCase syncItemSearchIndexUseCase;
 
-    @KafkaListener(
-            topics = ITEM_PRICE_CHANGED_TOPIC,
-            groupId = "item-search-group"
-    )
+//    @KafkaListener(
+//            topics = ITEM_PRICE_CHANGED_TOPIC,
+//            groupId = "item-search-group"
+//    )
     public void consume(ItemPriceChangedEvent  event) {
 
         // 읽어오는 이벤트 저장
-        syncItemSearchIndexUseCase.syncPriceChanged(event);
+//        syncItemSearchIndexUseCase.syncPriceChanged(event);
 
     }
 
