@@ -48,50 +48,50 @@ public class ItemSearchController {
         return ResponseEntity.ok(itemSearchUseCase.autocomplete(keyword, size));
     }
 
-    @Operation(summary = "필터 조회 API (1번 ItemController 에서 필터 조회랑 같은 역할)")
-    @GetMapping("/api/v1/items/search/filter")
-    public ResponseEntity<PageResponse> getItemsFilterV2(
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "20") Integer size,
-            @RequestParam(required = false, defaultValue = "name") String sortBy,
-            @RequestParam(required = false, defaultValue = "ASC") String direction,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Category category,
-            @RequestParam(required = false) Boolean active
-    ) {
-        Sort elasticsearchSort = createElasticsearchSort(sortBy, direction); // 정렬 기준 정하기 (밑에 함수 참고)
-        Pageable pageable = PageRequest.of(page, size, elasticsearchSort);
-        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
-        Page<ItemResponse> map = itemSearchUseCase.search(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
-        return ResponseEntity.status(HttpStatus.OK).body(PageResponse.from(map));
-    }
+//    @Operation(summary = "필터 조회 API (1번 ItemController 에서 필터 조회랑 같은 역할)")
+//    @GetMapping("/api/v1/items/search/filter")
+//    public ResponseEntity<PageResponse> getItemsFilterV2(
+//            @RequestParam(required = false, defaultValue = "0") Integer page,
+//            @RequestParam(required = false, defaultValue = "20") Integer size,
+//            @RequestParam(required = false, defaultValue = "name") String sortBy,
+//            @RequestParam(required = false, defaultValue = "ASC") String direction,
+//            @RequestParam(required = false) String name,
+//            @RequestParam(required = false) Category category,
+//            @RequestParam(required = false) Boolean active
+//    ) {
+//        Sort elasticsearchSort = createElasticsearchSort(sortBy, direction); // 정렬 기준 정하기 (밑에 함수 참고)
+//        Pageable pageable = PageRequest.of(page, size, elasticsearchSort);
+//        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
+//        Page<ItemResponse> map = itemSearchUseCase.search(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
+//        return ResponseEntity.status(HttpStatus.OK).body(PageResponse.from(map));
+//    }
 
 
-    private String convertToElasticsearchSortField(String sortBy) {
-        return switch (sortBy) {
-            // case "name" -> "name.keyword"; 한글이 영문보다 정렬 우선순위 높게 필터링 걸기 위해서 따로 뺌
-            case "sku" -> "sku";
-            case "unitPrice" -> "unitPrice";
-            default -> "name.keyword";
-        };
-    }
+//    private String convertToElasticsearchSortField(String sortBy) {
+//        return switch (sortBy) {
+//            // case "name" -> "name.keyword"; 한글이 영문보다 정렬 우선순위 높게 필터링 걸기 위해서 따로 뺌
+//            case "sku" -> "sku";
+//            case "unitPrice" -> "unitPrice";
+//            default -> "name.keyword";
+//        };
+//    }
 
-    private Sort createElasticsearchSort(String sortBy, String direction) {
-        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-        if ("name".equals(sortBy)) {
-            return Sort.by(
-                    Sort.Order.asc("nameSortGroup"),               // 한글 → 영문 → 숫자 → 기타 순서 고정
-                    new Sort.Order(sortDirection, "name.keyword"),  // 그룹 안에서 이름 ASC/DESC
-                    Sort.Order.asc("sku")                          // 동일 이름일 때 안정 정렬
-            );
-        }
-        String esSortBy = convertToElasticsearchSortField(sortBy);
-        return Sort.by(
-                new Sort.Order(sortDirection, esSortBy),
-                Sort.Order.asc("sku")
-        );
-
-    }
+//    private Sort createElasticsearchSort(String sortBy, String direction) {
+//        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+//        if ("name".equals(sortBy)) {
+//            return Sort.by(
+//                    Sort.Order.asc("nameSortGroup"),               // 한글 → 영문 → 숫자 → 기타 순서 고정
+//                    new Sort.Order(sortDirection, "name.keyword"),  // 그룹 안에서 이름 ASC/DESC
+//                    Sort.Order.asc("sku")                          // 동일 이름일 때 안정 정렬
+//            );
+//        }
+//        String esSortBy = convertToElasticsearchSortField(sortBy);
+//        return Sort.by(
+//                new Sort.Order(sortDirection, esSortBy),
+//                Sort.Order.asc("sku")
+//        );
+//
+//    }
 
 
 

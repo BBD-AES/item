@@ -19,6 +19,6 @@ public interface ItemSearchPort {
 
     List<ItemAutocompleteResponse> autocomplete(String keyword, int size);
 
-    Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
+//    Page<Item> getFilter(Pageable pageable, GetItemFilterCommand getItemFilterCommand);
 
 }

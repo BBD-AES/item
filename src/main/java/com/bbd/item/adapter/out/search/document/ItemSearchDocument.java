@@ -22,75 +22,44 @@ public class ItemSearchDocument {
 
     private String name;
 
-    private int nameSortGroup;
-
-    private String category;
-
-    private String unit;
-
-    private int safetyStock;
-
-    private int unitPrice;
-
     private boolean active;
-
-    private String sourcingType;
 
     public static ItemSearchDocument from(Item item) {
         return new ItemSearchDocument(
                 item.getSku(),
                 item.getName(),
-                calculateNameSortGroup(item.getName()),
-                item.getCategory().name(),
-                item.getUnit().name(),
-                item.getSafetyStock(),
-                item.getUnitPrice(),
-                item.isActive(),
-                item.getSourcingType().name()
+                item.isActive()
         );
     }
 
-    public static Item toDomain(ItemSearchDocument itemSearchDocument) {
-        return new Item(
-                itemSearchDocument.getSku(),
-                itemSearchDocument.getName(),
-                Category.valueOf(itemSearchDocument.getCategory()),
-                Unit.valueOf(itemSearchDocument.getUnit()),
-                itemSearchDocument.getSafetyStock(),
-                itemSearchDocument.getUnitPrice(),
-                itemSearchDocument.isActive(),
-                SourcingType.valueOf(itemSearchDocument.getSourcingType())
-        );
-    }
-
-    private static int calculateNameSortGroup(String name) {
-        if (name == null || name.isBlank()) {
-            return 3;
-        }
-
-        char first = name.trim().charAt(0);
-
-        // 한글 완성형: 가 ~ 힣
-        if (first >= '가' && first <= '힣') {
-            return 0;
-        }
-
-        // 한글 자음: ㄱ ~ ㅎ
-        if (first >= 'ㄱ' && first <= 'ㅎ') {
-            return 0;
-        }
-
-        // 영문: A-Z, a-z
-        if ((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z')) {
-            return 1;
-        }
-
-        // 숫자
-        if (first >= '0' && first <= '9') {
-            return 2;
-        }
-
-        // 기타 문자
-        return 3;
-    }
+//    private static int calculateNameSortGroup(String name) {
+//        if (name == null || name.isBlank()) {
+//            return 3;
+//        }
+//
+//        char first = name.trim().charAt(0);
+//
+//        // 한글 완성형: 가 ~ 힣
+//        if (first >= '가' && first <= '힣') {
+//            return 0;
+//        }
+//
+//        // 한글 자음: ㄱ ~ ㅎ
+//        if (first >= 'ㄱ' && first <= 'ㅎ') {
+//            return 0;
+//        }
+//
+//        // 영문: A-Z, a-z
+//        if ((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z')) {
+//            return 1;
+//        }
+//
+//        // 숫자
+//        if (first >= '0' && first <= '9') {
+//            return 2;
+//        }
+//
+//        // 기타 문자
+//        return 3;
+//    }
 }

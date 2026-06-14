@@ -14,6 +14,6 @@ public interface ItemSearchUseCase {
 
     List<ItemAutocompleteResponse> autocomplete(String keyword, int size);
 
-    Page<Item> search(Pageable pageable, GetItemFilterCommand command);
+//    Page<Item> search(Pageable pageable, GetItemFilterCommand command);
 
 }

@@ -68,8 +68,8 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
         return itemSearchPort.autocomplete(keyword, size);
     }
 
-    @Override
-    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
-        return itemSearchPort.getFilter(pageable, command);
-    }
+//    @Override
+//    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
+//        return itemSearchPort.getFilter(pageable, command);
+//    }
 }

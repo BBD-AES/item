@@ -74,47 +74,47 @@ public class ItemSearchAdapter implements ItemSearchPort {
                 .toList();
     }
 
-    @Override
-    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand command) {
-        NativeQuery query = NativeQuery.builder()
-                .withQuery(q -> q.bool(b -> {
-                    if (command.getName() != null && !command.getName().isBlank()) {
-                        b.must(m -> m.match(mm -> mm
-                                .field("name.ngram")
-                                .query(command.getName())
-                        ));
-                    }
-
-                    if (command.getCategory() != null) {
-                        b.filter(f -> f.term(t -> t
-                                .field("category")
-                                .value(command.getCategory().name())
-                        ));
-                    }
-
-                    if (command.getActive() != null) {
-                        b.filter(f -> f.term(t -> t
-                                .field("active")
-                                .value(command.getActive())
-                        ));
-                    }
-                    return b;
-                }))
-                .withPageable(pageable)
-                .build();
-
-        var searchHits = elasticsearchOperations.search(query, ItemSearchDocument.class);
-
-        List<Item> content = searchHits.getSearchHits()
-                .stream()
-                .map(SearchHit::getContent)
-                .map(ItemSearchDocument::toDomain)
-                .toList();
-
-        return new PageImpl<>(
-                content,
-                pageable,
-                searchHits.getTotalHits()
-        );
-    }
+//    @Override
+//    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand command) {
+//        NativeQuery query = NativeQuery.builder()
+//                .withQuery(q -> q.bool(b -> {
+//                    if (command.getName() != null && !command.getName().isBlank()) {
+//                        b.must(m -> m.match(mm -> mm
+//                                .field("name.ngram")
+//                                .query(command.getName())
+//                        ));
+//                    }
+//
+//                    if (command.getCategory() != null) {
+//                        b.filter(f -> f.term(t -> t
+//                                .field("category")
+//                                .value(command.getCategory().name())
+//                        ));
+//                    }
+//
+//                    if (command.getActive() != null) {
+//                        b.filter(f -> f.term(t -> t
+//                                .field("active")
+//                                .value(command.getActive())
+//                        ));
+//                    }
+//                    return b;
+//                }))
+//                .withPageable(pageable)
+//                .build();
+//
+//        var searchHits = elasticsearchOperations.search(query, ItemSearchDocument.class);
+//
+//        List<Item> content = searchHits.getSearchHits()
+//                .stream()
+//                .map(SearchHit::getContent)
+//                .map(ItemSearchDocument::toDomain)
+//                .toList();
+//
+//        return new PageImpl<>(
+//                content,
+//                pageable,
+//                searchHits.getTotalHits()
+//        );
+//    }
 }
