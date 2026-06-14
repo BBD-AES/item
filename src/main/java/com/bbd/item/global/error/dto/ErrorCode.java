@@ -49,7 +49,13 @@ public enum ErrorCode {
     ITEM_SKU_NOTFOUND(HttpStatus.BAD_REQUEST, "I018", "존재하지 않는 SKU가 포함되어 있습니다."),
     ITEM_UPDATE_PRICE_FAIL(HttpStatus.CONFLICT, "I019", "상품 가격 변경에 실패했습니다."),
     ITEM_EVENT_NOT_PUBLISH(HttpStatus.INTERNAL_SERVER_ERROR, "I020", "가격 변경 이벤트 발행에 실패했습니다."),
-    OUTBOX_EVENT_CREATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I021", "Outbox 이벤트 생성에 실패했습니다.")
+    OUTBOX_EVENT_CREATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I021", "Outbox 이벤트 생성에 실패했습니다."),
+
+
+    /**
+     * 테스트용
+     */
+    ERROR_TEST(HttpStatus.BAD_REQUEST, "I022", "에러 응답 테스트 확인용입니다."),
 
     ;
 
