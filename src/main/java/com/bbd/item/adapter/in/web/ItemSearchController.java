@@ -59,10 +59,8 @@ public class ItemSearchController {
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active
     ) {
-
-        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-        String esSortBy = convertToElasticsearchSortField(sortBy);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, esSortBy));
+        Sort elasticsearchSort = createElasticsearchSort(sortBy, direction); // 정렬 기준 정하기 (밑에 함수 참고)
+        Pageable pageable = PageRequest.of(page, size, elasticsearchSort);
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
         Page<ItemResponse> map = itemSearchUseCase.search(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
         return ResponseEntity.status(HttpStatus.OK).body(PageResponse.from(map));
@@ -71,13 +69,29 @@ public class ItemSearchController {
 
     private String convertToElasticsearchSortField(String sortBy) {
         return switch (sortBy) {
-            case "name" -> "name.keyword";
+            // case "name" -> "name.keyword"; 한글이 영문보다 정렬 우선순위 높게 필터링 걸기 위해서 따로 뺌
             case "sku" -> "sku";
             case "unitPrice" -> "unitPrice";
             default -> "name.keyword";
         };
     }
 
+    private Sort createElasticsearchSort(String sortBy, String direction) {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        if ("name".equals(sortBy)) {
+            return Sort.by(
+                    Sort.Order.asc("nameSortGroup"),               // 한글 → 영문 → 숫자 → 기타 순서 고정
+                    new Sort.Order(sortDirection, "name.keyword"),  // 그룹 안에서 이름 ASC/DESC
+                    Sort.Order.asc("sku")                          // 동일 이름일 때 안정 정렬
+            );
+        }
+        String esSortBy = convertToElasticsearchSortField(sortBy);
+        return Sort.by(
+                new Sort.Order(sortDirection, esSortBy),
+                Sort.Order.asc("sku")
+        );
+
+    }
 
 
 

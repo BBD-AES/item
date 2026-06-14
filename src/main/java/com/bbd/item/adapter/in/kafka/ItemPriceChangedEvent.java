@@ -15,4 +15,5 @@ public class ItemPriceChangedEvent {
     private String occurredAt;
     private String sku;
     private int unitPrice;       // 새 기준단가(원)
+
 }

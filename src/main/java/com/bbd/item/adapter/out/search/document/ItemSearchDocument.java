@@ -22,6 +22,8 @@ public class ItemSearchDocument {
 
     private String name;
 
+    private int nameSortGroup;
+
     private String category;
 
     private String unit;
@@ -38,6 +40,7 @@ public class ItemSearchDocument {
         return new ItemSearchDocument(
                 item.getSku(),
                 item.getName(),
+                calculateNameSortGroup(item.getName()),
                 item.getCategory().name(),
                 item.getUnit().name(),
                 item.getSafetyStock(),
@@ -60,4 +63,34 @@ public class ItemSearchDocument {
         );
     }
 
+    private static int calculateNameSortGroup(String name) {
+        if (name == null || name.isBlank()) {
+            return 3;
+        }
+
+        char first = name.trim().charAt(0);
+
+        // 한글 완성형: 가 ~ 힣
+        if (first >= '가' && first <= '힣') {
+            return 0;
+        }
+
+        // 한글 자음: ㄱ ~ ㅎ
+        if (first >= 'ㄱ' && first <= 'ㅎ') {
+            return 0;
+        }
+
+        // 영문: A-Z, a-z
+        if ((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z')) {
+            return 1;
+        }
+
+        // 숫자
+        if (first >= '0' && first <= '9') {
+            return 2;
+        }
+
+        // 기타 문자
+        return 3;
+    }
 }
