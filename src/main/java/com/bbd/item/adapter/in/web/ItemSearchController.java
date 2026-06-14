@@ -36,7 +36,7 @@ public class ItemSearchController {
     @PostMapping("/api/v1/items/search/bulk")
     public ResponseEntity<Void> bulkCreate(){
         itemSearchUseCase.bulkCreate();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @Operation(summary = "아이템 이름 자동완성 API")
