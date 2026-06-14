@@ -57,6 +57,7 @@ public enum ErrorCode {
     ITEM_SEARCH_INDEX_SAVE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I023", "상품 검색 색인 저장에 실패했습니다."),
     ITEM_SEARCH_INDEX_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I024", "상품 검색 색인 삭제에 실패했습니다."),
     ITEM_SEARCH_INDEX_BULK_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I025", "상품 검색 색인 일괄 생성에 실패했습니다."),
+    ITEM_CREATED_EVENT_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "I032", "상품 생성 이벤트에 해당하는 상품을 찾을 수 없습니다."),
 
     /**
      * Kafka Item Event Consumer 관련 에러
