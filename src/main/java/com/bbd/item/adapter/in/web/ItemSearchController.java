@@ -31,7 +31,13 @@ public class ItemSearchController {
 
     private final ItemSearchUseCase itemSearchUseCase;
 
-    // TODO : 관리자만 가능하게끔 Role 체크 (ElasticSearch 색인 동기화)
+    // TODO(#37): 보안 모듈(bbd-security-core) 적용 후 본 엔드포인트를 관리자 전용으로 제한할 것.
+    //   전체 재색인은 ES 인덱스를 삭제 후 재구축하는 파괴적·고비용 작업이므로 반드시 ADMIN 만 호출 가능해야 한다.
+    //   적용 절차:
+    //     1) build.gradle 의 com.bbd:bbd-security-core 의존성 활성화
+    //     2) @EnableMethodSecurity 구성 (Spring Security 6+/Boot 3+ 기준)
+    //     3) 아래 bulkCreate() 에 @PreAuthorize("hasRole('ADMIN')") 추가
+    //   현재는 보안 모듈이 미적용(주석 처리) 상태라 권한 체크 적용을 보류한다.
     @Operation(summary = "RDB -> ElasticSearch DB 색인 API")
     @PostMapping("/api/v1/items/search/bulk")
     public ResponseEntity<Void> bulkCreate(){
