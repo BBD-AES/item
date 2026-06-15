@@ -10,16 +10,38 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.InnerField;
+import org.springframework.data.elasticsearch.annotations.MultiField;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Setting(settingPath = "elasticsearch/item-search-settings.json")
 @Document(indexName = "bbd-items", createIndex = false)
 public class ItemSearchDocument {
 
     @Id
     private String sku;
 
+    /**
+     * name: 일반 text 검색용 메인 필드
+     * name.autocomplete: edge_ngram 색인 + 검색어는 그대로 매칭하는 자동완성 전용 서브 필드
+     * (분석기 정의는 elasticsearch/item-search-settings.json 참고)
+     */
+    @MultiField(
+            mainField = @Field(type = FieldType.Text),
+            otherFields = {
+                    @InnerField(
+                            suffix = "autocomplete",
+                            type = FieldType.Text,
+                            analyzer = "autocomplete_index",
+                            searchAnalyzer = "autocomplete_search"
+                    )
+            }
+    )
     private String name;
 
     private boolean active;
