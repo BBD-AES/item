@@ -90,7 +90,7 @@ public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkRead
 
     @Override
     public List<Item> getAllInSku(ItemListSku itemListSku) {
-        return itemJpaRepository.findAllIntSku(itemListSku)
+        return itemJpaRepository.getAllInSku(itemListSku)
                 .stream()
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
                 .toList();

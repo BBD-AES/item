@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.in.web;
 
 import com.bbd.item.adapter.in.web.dto.*;
+import com.bbd.item.application.dto.ItemSkuLookupResponse;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
@@ -100,14 +101,11 @@ public class ItemController {
 
     @Operation(summary = "Sku 포함 여러개 조회 API, 50개 이하만 가능")
     @GetMapping("/api/v1/items")
-    public ResponseEntity<List<ItemResponse>> getItems(
+    public ResponseEntity<List<ItemSkuLookupResponse>> getItems(
             @RequestParam List<String> sku
     ) {
         ItemListSku itemListSku = new ItemListSku(sku);
-        List<Item> allInSku = itemUseCaseGet.getAllInSku(itemListSku);
-        List<ItemResponse> list = allInSku.stream()
-                .map(item -> new ItemResponse(item))
-                .toList();
+        List<ItemSkuLookupResponse> list = itemUseCaseGet.getAllInSku(itemListSku);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 

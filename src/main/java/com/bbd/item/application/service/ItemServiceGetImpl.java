@@ -1,6 +1,7 @@
 package com.bbd.item.application.service;
 
 import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.dto.ItemSkuLookupResponse;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,11 +55,20 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     }
 
     @Override
-    public List<Item> getAllInSku(ItemListSku itemListSku) {
+    public List<ItemSkuLookupResponse> getAllInSku(ItemListSku itemListSku) {
+        // where in 쿼리로 조회
         List<Item> allInSku = itemPersistencePort.getAllInSku(itemListSku);
-        if(itemListSku.getSkuList().size() !=  allInSku.size()) {
-            throw new ApiException(ErrorCode.ITEM_SKU_NOTFOUND);
-        }
-        return allInSku;
+        Map<String, Item> itemMap = allInSku.stream().collect(Collectors.toMap(i -> i.getSku(), Function.identity()));
+
+        return itemListSku.getSkuList().stream()
+                .map(sku -> {
+                    Item item = itemMap.get(sku);
+                    if (item == null) {
+                        return ItemSkuLookupResponse.notFound(sku);
+                    }
+                    return ItemSkuLookupResponse.found(item);
+                })
+                .toList();
     }
+
 }
