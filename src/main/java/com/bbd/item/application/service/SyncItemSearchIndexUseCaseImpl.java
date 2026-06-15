@@ -12,6 +12,7 @@ import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 //@Service
@@ -24,6 +25,14 @@ public class SyncItemSearchIndexUseCaseImpl implements SyncItemSearchIndexUseCas
 
     @Override
     public void syncPriceChanged(ItemPriceChangedEvent event) {
+
+//      0. 멱등성 선점 전에 필수 값 검증 (null/blank eventId·sku 로 인한 잘못된 Redis 키 방지)
+        if (event == null
+                || !StringUtils.hasText(event.getEventId())
+                || !StringUtils.hasText(event.getSku())) {
+            log.warn("유효하지 않은 가격 변경 이벤트입니다. eventId/sku 가 비어 있어 처리를 중단합니다. event={}", event);
+            throw new ApiException(ErrorCode.ITEM_EVENT_INVALID);
+        }
 
         String eventId = event.getEventId();
 
