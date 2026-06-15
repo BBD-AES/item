@@ -64,7 +64,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jackson'
 
 //    // Siwon's security core
-//    implementation 'com.bbd:bbd-security-core:0.0.1'
+//    implementation 'com.bbd:bbd-security-core:0.0.2'
 //
 //    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
