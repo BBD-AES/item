@@ -42,8 +42,9 @@ public class ItemController {
      * <p>
      * Patch
      * 1. 상품 이름 수정 API
-     * 2. 상품 단가 수정 API
-     * 3. 상품 이름 & 단가 수정 API
+     * 2. 상품 활성화 / 비활성화 API
+     * 3. 상품 단가 수정 API
+     * 4. 상품 이름 & 단가 수정 API
      * <p>
      * Get
      * 1. Sku 단건 조회 API
@@ -84,6 +85,20 @@ public class ItemController {
         UpdatePriceCommand updatePriceCommand = new UpdatePriceCommand(sku, req.getUnitPrice());
         itemUseCaseUpdate.updatePrice(updatePriceCommand);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "상품 활성화 API (권한 체크 필요)")
+    @PatchMapping("/api/v1/items/{sku}/activate")
+    public ResponseEntity<Void> activateItem(@NotBlank @PathVariable String sku) {
+        itemUseCaseUpdate.activate(sku);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "상품 비활성화 API (권한 체크 필요)")
+    @PatchMapping("/api/v1/items/{sku}/deactivate")
+    public ResponseEntity<Void> deactivateItem(@NotBlank @PathVariable String sku) {
+        itemUseCaseUpdate.deactivate(sku);
+        return ResponseEntity.ok().build();
     }
 
 

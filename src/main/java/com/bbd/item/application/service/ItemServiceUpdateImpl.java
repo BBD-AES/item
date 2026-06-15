@@ -41,6 +41,28 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
         outboxEventPort.save(outboxEvent);
     }
 
+    @Override
+    public void activate(String sku) {
+        Item item = itemPersistencePort.findBySku(sku)
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
+        if (item.isActive()) {
+            throw new ApiException(ErrorCode.ITEM_ALREADY_ACTIVE);
+        }
+        item.activate();
+        itemPersistencePort.save(item);
+    }
+
+    @Override
+    public void deactivate(String sku) {
+        Item item = itemPersistencePort.findBySku(sku)
+                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
+        if (!item.isActive()) {
+            throw new ApiException(ErrorCode.ITEM_ALREADY_INACTIVE);
+        }
+        item.deactivate();
+        itemPersistencePort.save(item);
+    }
+
 
     /**
      * 밑에 있는 서비스들은 변결 불가
