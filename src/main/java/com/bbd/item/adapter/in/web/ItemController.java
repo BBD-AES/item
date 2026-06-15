@@ -100,7 +100,10 @@ public class ItemController {
 
     @Operation(summary = "Sku 포함 여러개 조회 API")
     @GetMapping("/api/v1/items")
-    public ResponseEntity<List<ItemResponse>> getItems(@RequestBody ItemListSku itemListSku) {
+    public ResponseEntity<List<ItemResponse>> getItems(
+            @RequestParam List<String> sku
+    ) {
+        ItemListSku itemListSku = new ItemListSku(sku);
         List<Item> allInSku = itemUseCaseGet.getAllInSku(itemListSku);
         List<ItemResponse> list = allInSku.stream()
                 .map(item -> new ItemResponse(item))

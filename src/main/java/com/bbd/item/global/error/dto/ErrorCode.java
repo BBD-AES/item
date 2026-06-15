@@ -50,34 +50,8 @@ public enum ErrorCode {
     ITEM_UPDATE_PRICE_FAIL(HttpStatus.CONFLICT, "I019", "상품 가격 변경에 실패했습니다."),
     ITEM_EVENT_NOT_PUBLISH(HttpStatus.INTERNAL_SERVER_ERROR, "I020", "가격 변경 이벤트 발행에 실패했습니다."),
     OUTBOX_EVENT_CREATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I021", "Outbox 이벤트 생성에 실패했습니다."),
-    /**
-     * Item Search / Elasticsearch 관련 에러
-     */
-    ITEM_SEARCH_INDEX_SYNC_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I022", "상품 검색 색인 동기화에 실패했습니다."),
-    ITEM_SEARCH_INDEX_SAVE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I023", "상품 검색 색인 저장에 실패했습니다."),
-    ITEM_SEARCH_INDEX_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I024", "상품 검색 색인 삭제에 실패했습니다."),
-    ITEM_SEARCH_INDEX_BULK_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I025", "상품 검색 색인 일괄 생성에 실패했습니다."),
-    ITEM_CREATED_EVENT_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "I032", "상품 생성 이벤트에 해당하는 상품을 찾을 수 없습니다."),
-
-    /**
-     * Kafka Item Event Consumer 관련 에러
-     */
-    ITEM_EVENT_CONSUME_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I026", "상품 이벤트 처리에 실패했습니다."),
-    ITEM_EVENT_INVALID(HttpStatus.BAD_REQUEST, "I027", "상품 이벤트 형식이 올바르지 않습니다."),
-    ITEM_EVENT_TYPE_INVALID(HttpStatus.BAD_REQUEST, "I028", "지원하지 않는 상품 이벤트 타입입니다."),
-
-    /**
-     * Redis 멱등성 관련 에러
-     */
-    ITEM_EVENT_IDEMPOTENCY_CHECK_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I029", "상품 이벤트 멱등성 확인에 실패했습니다."),
-    ITEM_EVENT_IDEMPOTENCY_SAVE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I030", "상품 이벤트 처리 상태 저장에 실패했습니다."),
-    ITEM_EVENT_IDEMPOTENCY_RELEASE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "I031", "상품 이벤트 처리 상태 해제에 실패했습니다."),
-
-
-    /**
-     * 테스트용
-     */
-    ERROR_TEST(HttpStatus.BAD_REQUEST, "I022", "에러 응답 테스트 확인용입니다."),
+    ITEM_SKU_LIST_REQUIRED(HttpStatus.BAD_REQUEST, "I033", "조회할 SKU 목록은 필수입니다."),
+    ITEM_SKU_LIST_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "I034", "SKU는 한 번에 최대 50개까지 조회할 수 있습니다."),
 
     ;
 
