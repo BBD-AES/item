@@ -98,7 +98,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemResponse);
     }
 
-    @Operation(summary = "Sku 포함 여러개 조회 API")
+    @Operation(summary = "Sku 포함 여러개 조회 API, 50개 이하만 가능")
     @GetMapping("/api/v1/items")
     public ResponseEntity<List<ItemResponse>> getItems(
             @RequestParam List<String> sku
