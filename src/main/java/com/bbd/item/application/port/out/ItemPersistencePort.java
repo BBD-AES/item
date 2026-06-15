@@ -40,4 +40,8 @@ public interface ItemPersistencePort {
     // 아이템 가격 변경 원자 처리
     boolean changePrice(UpdatePriceCommand updatePriceCommand);
 
+    boolean activate(String sku);
+
+    boolean deactivate(String sku);
+
 }

@@ -259,4 +259,40 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
         return execute == 1L;
     }
 
+
+    /**
+     * 아이템 활성화 원자 처리
+     */
+    @Override
+    public boolean activate(String sku) {
+        long execute = jpaQueryFactory
+                .update(itemJpaEntity)
+                .set(itemJpaEntity.active, true)
+                .where(
+                        itemJpaEntity.sku.eq(sku),
+                        itemJpaEntity.active.isFalse()
+                )
+                .execute();
+
+        return execute == 1L;
+    }
+
+    /**
+     * 아이템 비활성화 원자 처리
+     */
+    @Override
+    public boolean deactivate(String sku) {
+        long execute = jpaQueryFactory
+                .update(itemJpaEntity)
+                .set(itemJpaEntity.active, false)
+                .where(
+                        itemJpaEntity.sku.eq(sku),
+                        itemJpaEntity.active.isTrue()
+                )
+                .execute();
+
+        return execute == 1L;
+    }
+
+
 }

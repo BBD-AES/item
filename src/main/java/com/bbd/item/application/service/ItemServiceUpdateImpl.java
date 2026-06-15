@@ -42,25 +42,44 @@ public class ItemServiceUpdateImpl implements ItemUseCaseUpdate {
     }
 
     @Override
+    @Transactional
     public void activate(String sku) {
-        Item item = itemPersistencePort.findBySku(sku)
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
-        if (item.isActive()) {
-            throw new ApiException(ErrorCode.ITEM_ALREADY_ACTIVE);
+        boolean updated = itemPersistencePort.activate(sku);
+
+        if (!updated) {
+            // 존재하지 않는 SKU인지, 이미 활성 상태인지 구분하고 싶으면 추가 조회
+            Item item = itemPersistencePort.findBySku(sku)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
+
+            if (item.isActive()) {
+                throw new ApiException(ErrorCode.ITEM_ALREADY_ACTIVE);
+            }
+
+            throw new ApiException(ErrorCode.ITEM_NOT_UPDATABLE);
         }
-        item.activate();
-        itemPersistencePort.save(item);
+
+        OutboxEvent outboxEvent = outboxEventFactory.itemActiveChanged(sku, true);
+        outboxEventPort.save(outboxEvent);
     }
 
     @Override
+    @Transactional
     public void deactivate(String sku) {
-        Item item = itemPersistencePort.findBySku(sku)
-                .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
-        if (!item.isActive()) {
-            throw new ApiException(ErrorCode.ITEM_ALREADY_INACTIVE);
+        boolean updated = itemPersistencePort.deactivate(sku);
+
+        if (!updated) {
+            Item item = itemPersistencePort.findBySku(sku)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ITEM_NOT_FOUND));
+
+            if (!item.isActive()) {
+                throw new ApiException(ErrorCode.ITEM_ALREADY_INACTIVE);
+            }
+
+            throw new ApiException(ErrorCode.ITEM_NOT_UPDATABLE);
         }
-        item.deactivate();
-        itemPersistencePort.save(item);
+
+        OutboxEvent outboxEvent = outboxEventFactory.itemActiveChanged(sku, false);
+        outboxEventPort.save(outboxEvent);
     }
 
 

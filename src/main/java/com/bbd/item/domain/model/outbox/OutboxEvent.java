@@ -94,6 +94,26 @@ public class OutboxEvent {
         );
     }
 
+    public static OutboxEvent itemActiveChanged(
+            String eventId,
+            String sku,
+            String payload
+    ) {
+        LocalDateTime now = LocalDateTime.now();
+        return new OutboxEvent(
+                eventId,
+                "item",
+                sku,
+                OutboxEventType.ITEM_ACTIVE_CHANGED,
+                payload,
+                OutboxStatus.PENDING,
+                0,
+                now,
+                now,
+                null
+        );
+    }
+
     public void markSent() {
         this.status = OutboxStatus.SENT;
         this.publishedAt = LocalDateTime.now();

@@ -26,4 +26,8 @@ public interface ItemQueryRepository {
     // Sku 포함되면 전부 조회
     List<ItemJpaEntity> getAllInSku(ItemListSku itemListSku);
 
+    boolean activate(String sku);
+
+    boolean deactivate(String sku);
+
 }

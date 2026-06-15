@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ItemEventPublisherAdapter implements ItemEventPublisher {
 
-    private static final String ITEM_PRICE_CHANGED_TOPIC = "item.price.changed";
+    private static final String ITEM_PRICE_CHANGED_TOPIC = "item.changed";
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override

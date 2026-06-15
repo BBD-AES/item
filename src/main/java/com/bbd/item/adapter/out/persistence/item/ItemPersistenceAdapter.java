@@ -116,4 +116,15 @@ public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkRead
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
                 .toList();
     }
+
+    @Override
+    public boolean activate(String sku) {
+        return itemJpaRepository.activate(sku);
+    }
+
+    @Override
+    public boolean deactivate(String sku) {
+        return itemJpaRepository.deactivate(sku);
+    }
+
 }
