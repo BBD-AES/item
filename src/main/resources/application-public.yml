@@ -1,10 +1,14 @@
+server:
+  servlet:
+    context-path: /item
+
 spring:
   application:
     name: item
 
   threads:
     virtual:
-      enabled: true # 자바 21 버전을 통해서 이번에 버츄얼 스레드도 한번 써보기
+      enabled: true # Java 21 Virtual Thread 사용
 
   datasource:
     url: ${DB_ENDPOINT}
@@ -15,13 +19,33 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
-        show_sql: false
         jdbc:
           time_zone: Asia/Seoul
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka.inwoohub.com:9092}
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+      properties:
+        spring.json.add.type.headers: false
+
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URI:http://localhost:9200}
+
+  data:
+    redis:
+      host: ${REDIS_URI:localhost}
+      port: ${REDIS_PORT:6379}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
 
 # Swagger
 springdoc:
@@ -31,7 +55,8 @@ springdoc:
     url: /item/v3/api-docs
     config-url: /item/v3/api-docs/swagger-config
 
-
-
-
-
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    root: info
