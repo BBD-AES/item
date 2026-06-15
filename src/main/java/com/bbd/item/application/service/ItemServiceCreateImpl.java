@@ -1,6 +1,7 @@
 package com.bbd.item.application.service;
 
 
+import com.bbd.item.application.event.ItemCreatedEvent;
 import com.bbd.item.application.port.in.ItemUseCaseCreate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.out.ItemPersistencePort;
@@ -8,6 +9,7 @@ import com.bbd.item.domain.model.item.Item;
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceCreateImpl implements ItemUseCaseCreate {
 
     private final ItemPersistencePort itemPersistencePort;
+    private final ApplicationEventPublisher eventPublisher; // 스프링 내부에서 이벤트로 처리하는 경우
 
     @Override
     public void create(CreateItemCommand req) {
@@ -40,6 +43,12 @@ public class ItemServiceCreateImpl implements ItemUseCaseCreate {
 
         // 저장
         itemPersistencePort.save(item);
+
+        // Kafka가 아닌 Spring 내부 이벤트 발행
+        // Item 생성 트랜잭션 commit 이후 Elasticsearch 자동완성 색인 저장을 수행
+        eventPublisher.publishEvent(new ItemCreatedEvent(item.getSku()));
     }
+
+
 
 }

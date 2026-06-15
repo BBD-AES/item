@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
     private final ItemBulkReadPort itemBulkReadPort; // RDB에서 Item 읽는 용도
     private final ItemSearchPort itemSearchPort;     // ES에 saveAll 색인 용도
 
+    @Async
     @Override
     public void bulkCreate() {
 
@@ -66,8 +68,8 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
         return itemSearchPort.autocomplete(keyword, size);
     }
 
-    @Override
-    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
-        return itemSearchPort.getFilter(pageable, command);
-    }
+//    @Override
+//    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
+//        return itemSearchPort.getFilter(pageable, command);
+//    }
 }
