@@ -63,3 +63,10 @@ jobs:
           repository: BBD-AES/infra
           event-type: deploy-service
           client-payload: '{"service":"bbd-item","profile":"public"}'
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --force-new-deployment

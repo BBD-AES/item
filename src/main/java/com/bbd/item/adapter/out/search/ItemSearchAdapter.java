@@ -3,16 +3,11 @@ package com.bbd.item.adapter.out.search;
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.adapter.out.search.document.ItemSearchDocument;
 import com.bbd.item.adapter.out.search.repository.ItemSearchRepository;
-import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
