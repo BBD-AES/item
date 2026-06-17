@@ -23,15 +23,19 @@ public class SwaggerConfig {
 
                 .addServersItem(new Server()
                         .url("http://localhost:8082/item")
-                        .description("Local 내 컴퓨터"))
-
-                .addServersItem(new Server()
-                        .url("http://100.73.142.41:8082/item")
-                        .description("강의실 노트북"))
+                        .description("local에서 직접 띄울 때"))
 
                 .addServersItem(new Server()
                         .url("http://192.168.200.220/item")
-                        .description("Nginx"))
+                        .description("강의실 노트북"))
+
+                .addServersItem(new Server()
+                        .url("https://bbd.inwoohub.com/item")
+                        .description("ECS"))
+
+                .addServersItem(new Server()
+                        .url("http://100.73.142.41/item")
+                        .description("TailScale 강의실 노트북"))
 
                 .components(new Components()
                 .addSecuritySchemes(SECURITY_SCHEME_NAME,
