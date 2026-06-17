@@ -39,7 +39,7 @@ spring:
         spring.json.add.type.headers: false
 
   elasticsearch:
-    uris: ${ELASTICSEARCH_URI:http://bbd-elasticsearch:9200}
+    uris: ${ELASTICSEARCH_URI:http://opensearch:9200}
 
   data:
     redis:
@@ -47,6 +47,12 @@ spring:
       port: ${REDIS_PORT:6379}
       ssl:
         enabled: ${REDIS_SSL_ENABLED:false}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI}
 
 springdoc:
   swagger-ui:
