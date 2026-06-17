@@ -25,6 +25,7 @@ repositories {
             password = findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
         }
     }
+
 }
 
 dependencies {
@@ -64,13 +65,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jackson'
 
 //    // Siwon's security core
-//    implementation 'com.bbd:bbd-security-core:0.0.2'
+    implementation 'com.bbd:bbd-security-core:0.0.4'
 //
 //    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // Elasticsearch
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    // OpenSearch
+    implementation 'org.opensearch.client:spring-data-opensearch-starter:3.0.6'
 }
 
 tasks.named('test') {

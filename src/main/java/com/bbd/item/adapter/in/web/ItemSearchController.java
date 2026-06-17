@@ -1,19 +1,11 @@
 package com.bbd.item.adapter.in.web;
 
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
-import com.bbd.item.adapter.in.web.dto.ItemResponse;
-import com.bbd.item.adapter.in.web.dto.PageResponse;
 import com.bbd.item.application.port.in.ItemSearchUseCase;
-import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
-import com.bbd.item.domain.model.item.Category;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

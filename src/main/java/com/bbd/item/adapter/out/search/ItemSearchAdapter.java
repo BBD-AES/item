@@ -6,8 +6,10 @@ import com.bbd.item.adapter.out.search.repository.ItemSearchRepository;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,19 +48,12 @@ public class ItemSearchAdapter implements ItemSearchPort {
         // name 기준으로 autocomplete 필드를 사용하고 keywork 로 탐색
         // active 즉, 사용 가능한것만 검색
         // size로 인해 너무 많이 말고 정해진 크기만 조회
-        NativeQuery query = NativeQuery.builder()
-                .withQuery(q -> q.bool(b -> b
-                        .must(m -> m.match(mm -> mm
-                                .field("name.autocomplete")
-                                .query(keyword)
-                        ))
-                        .filter(f -> f.term(t -> t
-                                .field("active")
-                                .value(true)
-                        ))
-                ))
-                .withMaxResults(size)
-                .build();
+        Criteria criteria = Criteria.where("name.autocomplete")
+                .matches(keyword)
+                .and("active")
+                .is(true);
+        CriteriaQuery query = new CriteriaQuery(criteria);
+        query.setPageable(PageRequest.of(0, size));
 
         // 쿼리 실행 후 ItemSearchDocument 로 변환하여 리턴
         return elasticsearchOperations.search(query, ItemSearchDocument.class)
