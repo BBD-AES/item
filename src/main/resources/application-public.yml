@@ -64,8 +64,8 @@ springdoc:
 logging:
   level:
     root: info
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.SQL: warn
+    org.hibernate.orm.jdbc.bind: warn
 
 opensearch:
   uris: ${ELASTICSEARCH_URI:http://opensearch:9200}
