@@ -136,6 +136,7 @@ public class ItemController {
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active
     ) {
+        log.info("필터 조회 API 호출!");
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
