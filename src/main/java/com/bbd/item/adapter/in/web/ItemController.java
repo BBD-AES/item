@@ -12,7 +12,6 @@ import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +35,6 @@ public class ItemController {
     private final ItemUseCaseCreate itemUseCaseCreate;
     private final ItemUseCaseGet itemUseCaseGet;
     private final ItemUseCaseUpdate itemUseCaseUpdate;
-
-    private final JdbcTemplate jdbcTemplate;
 
     /**
      * Post
@@ -218,33 +214,5 @@ public class ItemController {
 //        return ResponseEntity.status(HttpStatus.OK).body(pageResponse);
 //    }
 
-    @PostConstruct
-    void dbCheck() {
-        log.info("DB_CHECK database={}",
-                jdbcTemplate.queryForObject("select current_database()", String.class));
-        log.info("DB_CHECK user={}",
-                jdbcTemplate.queryForObject("select current_user", String.class));
-        log.info("DB_CHECK server={}",
-                jdbcTemplate.queryForObject("select inet_server_addr()::text", String.class));
-        log.info("DB_CHECK schema={}",
-                jdbcTemplate.queryForObject("select current_schema()", String.class));
-        log.info("DB_CHECK search_path={}",
-                jdbcTemplate.queryForObject("show search_path", String.class));
-        log.info("DB_CHECK bbd_count={}",
-                jdbcTemplate.queryForObject("select count(*) from bbd.item", Long.class));
-        log.info("DB_CHECK bbd2_count={}",
-                jdbcTemplate.queryForObject("select count(*) from bbd2.item", Long.class));
-        log.info("DB_CHECK item_count_by_search_path={}",
-                jdbcTemplate.queryForObject("select count(*) from item", Long.class));
-        log.info("DB_CHECK item_real_table={}",
-                jdbcTemplate.queryForObject("""
-                        select coalesce(string_agg(real_table || ':' || cnt, ', '), 'EMPTY')
-                        from (
-                            select tableoid::regclass::text as real_table, count(*) as cnt
-                            from item
-                            group by tableoid::regclass::text
-                        ) t
-                        """, String.class));
-    }
 
 }
