@@ -54,6 +54,11 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI}
 
+  http:
+    serviceclient:
+      bbd-user-service:
+        base-url: ${USER_SERVICE_BASE_URL:http://localhost:8081/user}
+
 springdoc:
   swagger-ui:
     tags-sorter: alpha
