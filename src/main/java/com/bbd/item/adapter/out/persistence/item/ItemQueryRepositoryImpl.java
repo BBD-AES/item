@@ -5,7 +5,6 @@ import com.bbd.item.adapter.in.web.dto.ItemListSku;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
-import com.bbd.item.domain.model.item.Item;
 import com.bbd.item.domain.model.item.Unit;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
