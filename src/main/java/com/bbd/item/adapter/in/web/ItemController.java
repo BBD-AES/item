@@ -10,8 +10,6 @@ import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
-import com.bbd.securitycore.adapter.in.annotation.RequireRole;
-import com.bbd.securitycore.domain.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -57,7 +55,7 @@ public class ItemController {
 
 
 
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
     @Operation(summary = "생성 API (권한 체크)")
     @PostMapping("/api/v1/items")
     @Valid
@@ -82,7 +80,7 @@ public class ItemController {
      * PATCH 구분선
      * ======================================
      */
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
     @Operation(summary = "상품 단가 수정 API (권한 체크 필요)")
     @PatchMapping("/api/v1/items/{sku}/price")
     public ResponseEntity<Void> updatePrice(@NotBlank @PathVariable String sku, @Valid @RequestBody UpdatePriceItemRequest req) {
@@ -91,7 +89,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
     @Operation(summary = "상품 활성화 API (권한 체크 필요)")
     @PatchMapping("/api/v1/items/{sku}/activate")
     public ResponseEntity<Void> activateItem(@NotBlank @PathVariable String sku) {
@@ -99,7 +97,7 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN})
     @Operation(summary = "상품 비활성화 API (권한 체크 필요)")
     @PatchMapping("/api/v1/items/{sku}/deactivate")
     public ResponseEntity<Void> deactivateItem(@NotBlank @PathVariable String sku) {
@@ -112,8 +110,8 @@ public class ItemController {
      * GET 구분선
      * ======================================
      */
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
-                    UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
+//                    UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
     @Operation(summary = "Sku 단건 조회 API")
     @GetMapping("/api/v1/items/{sku}")
     public ResponseEntity<ItemResponse> getItem(@NotBlank @PathVariable String sku) {
@@ -122,8 +120,8 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemResponse);
     }
 
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
-            UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
+//            UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
     @Operation(summary = "Sku 포함 여러개 조회 API, 50개 이하만 가능")
     @GetMapping("/api/v1/items")
     public ResponseEntity<List<ItemSkuLookupResponse>> getItems(
@@ -135,8 +133,8 @@ public class ItemController {
     }
 
 
-    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
-            UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
+//    @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
+//            UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
     @Operation(summary = "필터 조회API (category & name & active 필터), (정렬은 이름 & sku 만 가능)")
     @GetMapping("/api/v1/items/filter")
     public ResponseEntity<PageResponse> getItemsFilterV2(
@@ -148,7 +146,6 @@ public class ItemController {
             @RequestParam(required = false) Category category,
             @RequestParam(required = false) Boolean active
     ) {
-        log.info("필터 조회 API 호출 완료!");
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
         GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);

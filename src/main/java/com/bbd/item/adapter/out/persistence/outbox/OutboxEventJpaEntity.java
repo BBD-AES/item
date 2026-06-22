@@ -48,6 +48,10 @@ public class OutboxEventJpaEntity {
     @Column(name = "published_at")
     private LocalDateTime publishedAt;
 
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
     public OutboxEventJpaEntity(
             String eventId,
             String aggregateType,
@@ -58,7 +62,8 @@ public class OutboxEventJpaEntity {
             int retryCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            LocalDateTime publishedAt
+            LocalDateTime publishedAt,
+            Long version
     ) {
         this.eventId = eventId;
         this.aggregateType = aggregateType;
@@ -70,5 +75,6 @@ public class OutboxEventJpaEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.publishedAt = publishedAt;
+        this.version = version;
     }
 }
