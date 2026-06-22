@@ -4,6 +4,7 @@ import com.bbd.item.application.port.out.OutboxEventPort;
 import com.bbd.item.domain.model.outbox.OutboxEvent;
 import com.bbd.item.domain.model.outbox.OutboxStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,12 +22,16 @@ public class OutboxEventPersistenceAdapter implements OutboxEventPort {
         outboxEventJpaRepository.save(outboxEventPersistenceMapper.toEntity(outBoxEvent));
     }
 
-
+    // PENDING 이벤트 배치사이즈 만큼 조회
     @Override
-    public List<OutboxEvent> getOutboxEvents(OutboxStatus outboxStatus) {
-        List<OutboxEventJpaEntity> jpaEvents = outboxEventJpaRepository.findByStatus(outboxStatus);
-        return jpaEvents.stream()
-                .map(e -> outboxEventPersistenceMapper.toDomain(e))
+    public List<OutboxEvent> getPendingOutboxEvents(int batchSize) {
+        return outboxEventJpaRepository
+                .findByStatusOrderByCreatedAtAsc(
+                        OutboxStatus.PENDING,
+                        PageRequest.of(0, batchSize)
+                )
+                .stream()
+                .map( e -> outboxEventPersistenceMapper.toDomain(e))
                 .toList();
     }
 

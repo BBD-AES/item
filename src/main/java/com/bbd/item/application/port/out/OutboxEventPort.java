@@ -13,7 +13,9 @@ public interface OutboxEventPort {
     // 이벤트 저장
     void save(OutboxEvent outBoxEvent);
 
-    // PENDING 상태 이벤트 조회
-    List<OutboxEvent> getOutboxEvents(OutboxStatus outboxStatus);
+    // PENDING 상태 아이템 배치 조회
+    List<OutboxEvent> getPendingOutboxEvents(int batchSize);
+
+
 
 }

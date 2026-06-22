@@ -13,12 +13,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OutboxEventService {
 
+    private static final int BATCH_SIZE = 100;
+
     private final OutboxEventPort outboxEventPort;
     private final OutboxEventProcessor outboxEventProcessor;
 
     public void publishPendingEvent() {
         // 1. Event 상태가 PENDING 인 이벤트 리스트로 조회
-        List<OutboxEvent> outboxEvents = outboxEventPort.getOutboxEvents(OutboxStatus.PENDING);
+        List<OutboxEvent> outboxEvents = outboxEventPort.getPendingOutboxEvents(BATCH_SIZE);
 
         // 바꿀 것이 없다면 아래 로직 실행 x
         if(outboxEvents.isEmpty()){
