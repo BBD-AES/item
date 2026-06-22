@@ -4,6 +4,7 @@ import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.SourcingType;
 import com.bbd.item.domain.model.item.Unit;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,22 +20,22 @@ public class CreateItemRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @NotNull
     private Category category;
 
-    @NotBlank
+    @NotNull
     private Unit unit;
 
-    @NotBlank
+    @NotNull
     private Integer safetyStock;
 
-    @NotBlank
+    @NotNull
     private Integer unitPrice;
 
-    @NotBlank
+    @NotNull
     private Boolean active;
 
-    @NotBlank
+    @NotNull
     private SourcingType sourcingType;
 
 }
