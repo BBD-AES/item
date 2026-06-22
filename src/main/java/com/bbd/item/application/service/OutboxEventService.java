@@ -6,11 +6,13 @@ import com.bbd.item.domain.model.outbox.OutboxEvent;
 import com.bbd.item.domain.model.outbox.OutboxStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class OutboxEventService {
 
     private static final int BATCH_SIZE = 100;
@@ -18,6 +20,7 @@ public class OutboxEventService {
     private final OutboxEventPort outboxEventPort;
     private final OutboxEventProcessor outboxEventProcessor;
 
+    @Transactional
     public void publishPendingEvent() {
         // 1. Event 상태가 PENDING 인 이벤트 리스트로 조회
         List<OutboxEvent> outboxEvents = outboxEventPort.getPendingOutboxEvents(BATCH_SIZE);
@@ -26,6 +29,8 @@ public class OutboxEventService {
         if(outboxEvents.isEmpty()){
             return;
         }
+
+        System.out.println("처리한!! outboxEvents.size() = " + outboxEvents.size());
 
         // 2. Outbox Pattern Processor 활용
         for(OutboxEvent outboxEvent : outboxEvents) {

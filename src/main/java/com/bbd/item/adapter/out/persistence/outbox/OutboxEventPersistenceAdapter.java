@@ -27,8 +27,8 @@ public class OutboxEventPersistenceAdapter implements OutboxEventPort {
     public List<OutboxEvent> getPendingOutboxEvents(int batchSize) {
         return outboxEventJpaRepository
                 .findByStatusOrderByCreatedAtAsc(
-                        OutboxStatus.PENDING,
-                        PageRequest.of(0, batchSize)
+                        OutboxStatus.PENDING.name(),
+                        batchSize
                 )
                 .stream()
                 .map( e -> outboxEventPersistenceMapper.toDomain(e))

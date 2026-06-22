@@ -37,7 +37,7 @@ public class OutboxEventProcessor {
             outboxEvent.increaseRetryCount();
 
             // 2. 회수 상태 10번 이상인 경우 실패 처리
-            if (outboxEvent.getRetryCount() > MAX_RETRY_COUNT) {
+            if (outboxEvent.getRetryCount() >= MAX_RETRY_COUNT) {
                 outboxEvent.markFailed();
             }
 
