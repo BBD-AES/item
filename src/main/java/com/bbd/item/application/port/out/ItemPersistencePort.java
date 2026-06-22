@@ -1,6 +1,6 @@
 package com.bbd.item.application.port.out;
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
@@ -35,7 +35,7 @@ public interface ItemPersistencePort {
     Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
 
     // Sku 포함되면 전부 조회
-    List<Item> getAllInSku(ItemListSku itemListSku);
+    List<Item> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand);
 
     // 아이템 가격 변경 원자 처리
     boolean changePrice(UpdatePriceCommand updatePriceCommand);

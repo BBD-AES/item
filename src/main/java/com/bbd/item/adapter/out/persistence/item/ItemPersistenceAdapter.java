@@ -1,6 +1,6 @@
 package com.bbd.item.adapter.out.persistence.item;
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
@@ -89,8 +89,8 @@ public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkRead
     }
 
     @Override
-    public List<Item> getAllInSku(ItemListSku itemListSku) {
-        return itemJpaRepository.getAllInSku(itemListSku)
+    public List<Item> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand) {
+        return itemJpaRepository.getAllInSku(getItemsBySkuCommand)
                 .stream()
                 .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity))
                 .toList();

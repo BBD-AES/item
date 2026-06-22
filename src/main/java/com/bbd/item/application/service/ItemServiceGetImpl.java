@@ -1,6 +1,6 @@
 package com.bbd.item.application.service;
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.dto.ItemSkuLookupResponse;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
@@ -55,12 +55,12 @@ public class ItemServiceGetImpl implements ItemUseCaseGet {
     }
 
     @Override
-    public List<ItemSkuLookupResponse> getAllInSku(ItemListSku itemListSku) {
+    public List<ItemSkuLookupResponse> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand) {
         // where in 쿼리로 조회
-        List<Item> allInSku = itemPersistencePort.getAllInSku(itemListSku);
+        List<Item> allInSku = itemPersistencePort.getAllInSku(getItemsBySkuCommand);
         Map<String, Item> itemMap = allInSku.stream().collect(Collectors.toMap(i -> i.getSku(), Function.identity()));
 
-        return itemListSku.getSkuList().stream()
+        return getItemsBySkuCommand.getSkuList().stream()
                 .map(sku -> {
                     Item item = itemMap.get(sku);
                     if (item == null) {

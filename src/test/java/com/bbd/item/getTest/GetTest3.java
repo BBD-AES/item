@@ -1,6 +1,6 @@
 package com.bbd.item.getTest;
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.global.error.ApiException;
 import org.junit.jupiter.api.Assertions;
@@ -29,10 +29,10 @@ public class GetTest3 {
         list.add("ACC-0736574");
         list.add("ㅇENGOIL-0736575");
         list.add("FILTER-0736576");
-        ItemListSku itemListSku = new ItemListSku(list);
+        GetItemsBySkuCommand getItemsBySkuCommand = new GetItemsBySkuCommand(list);
 
         // then
-        Assertions.assertThrows(ApiException.class, () -> itemUseCaseGet.getAllInSku(itemListSku));
+        Assertions.assertThrows(ApiException.class, () -> itemUseCaseGet.getAllInSku(getItemsBySkuCommand));
 
     }
 
