@@ -17,7 +17,9 @@ public class OutboxEventPersistenceMapper {
                 outboxEvent.getRetryCount(),
                 outboxEvent.getCreatedAt(),
                 outboxEvent.getUpdatedAt(),
-                outboxEvent.getPublishedAt()
+                outboxEvent.getPublishedAt(),
+                outboxEvent.getVersion()
+
         );
     }
 
@@ -32,7 +34,8 @@ public class OutboxEventPersistenceMapper {
                 entity.getRetryCount(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
-                entity.getPublishedAt()
+                entity.getPublishedAt(),
+                entity.getVersion()
         );
     }
 }

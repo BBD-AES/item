@@ -1,10 +1,8 @@
 package com.bbd.item.domain.model.outbox;
 
-import com.bbd.item.adapter.out.kafka.ItemKafkaRequest;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 public class OutboxEvent {
@@ -22,6 +20,8 @@ public class OutboxEvent {
     private LocalDateTime updatedAt;
     private LocalDateTime publishedAt;
 
+    private Long version;
+
     private OutboxEvent(
             String eventId,                 // UUID 랜덤
             String aggregateType,           // 발행자 타입
@@ -32,7 +32,8 @@ public class OutboxEvent {
             int retryCount,                 // 시도 횟수
             LocalDateTime createdAt,        // 만든 시간
             LocalDateTime updatedAt,        // 업데이트 시간
-            LocalDateTime publishedAt       // 발행 시간
+            LocalDateTime publishedAt,      // 발행 시간
+            Long version
     ) {
         this.eventId = eventId;
         this.aggregateType = aggregateType;
@@ -44,6 +45,7 @@ public class OutboxEvent {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.publishedAt = publishedAt;
+        this.version = version;
     }
 
     public static OutboxEvent itemPriceChanged(
@@ -63,6 +65,7 @@ public class OutboxEvent {
                 0,
                 now,
                 now,
+                null,
                 null
         );
     }
@@ -78,7 +81,8 @@ public class OutboxEvent {
             int retryCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            LocalDateTime publishedAt
+            LocalDateTime publishedAt,
+            Long version
     ) {
         return new OutboxEvent(
                 eventId,
@@ -90,7 +94,8 @@ public class OutboxEvent {
                 retryCount,
                 createdAt,
                 updatedAt,
-                publishedAt
+                publishedAt,
+                version
         );
     }
 
@@ -110,6 +115,7 @@ public class OutboxEvent {
                 0,
                 now,
                 now,
+                null,
                 null
         );
     }
