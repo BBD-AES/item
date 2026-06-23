@@ -1,4 +1,4 @@
-package com.bbd.item.adapter.in.web.dto;
+package com.bbd.item.application.port.in.dto;
 
 import com.bbd.item.global.error.ApiException;
 import com.bbd.item.global.error.dto.ErrorCode;
@@ -10,11 +10,11 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ItemListSku {
+public class GetItemsBySkuCommand {
 
     private List<String> skuList;
 
-    public ItemListSku(List<String> skuList) {
+    public GetItemsBySkuCommand(List<String> skuList) {
         validate(skuList);
         this.skuList = skuList;
     }

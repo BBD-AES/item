@@ -1,6 +1,6 @@
 package com.bbd.item.application.port.in;
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.dto.ItemSkuLookupResponse;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.GetNameCommand;
@@ -22,5 +22,5 @@ public interface ItemUseCaseGet {
 
     Page<Item> getName(Pageable pageable, GetNameCommand getNameCommand);
 
-    List<ItemSkuLookupResponse> getAllInSku(ItemListSku itemListSku);
+    List<ItemSkuLookupResponse> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand);
 }

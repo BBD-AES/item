@@ -7,6 +7,7 @@ import com.bbd.item.application.port.in.ItemUseCaseGet;
 import com.bbd.item.application.port.in.ItemUseCaseUpdate;
 import com.bbd.item.application.port.in.dto.CreateItemCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
@@ -125,8 +126,8 @@ public class ItemController {
     public ResponseEntity<List<ItemSkuLookupResponse>> getItems(
             @RequestParam List<String> sku
     ) {
-        ItemListSku itemListSku = new ItemListSku(sku);
-        List<ItemSkuLookupResponse> list = itemUseCaseGet.getAllInSku(itemListSku);
+        GetItemsBySkuCommand getItemsBySkuCommand = new GetItemsBySkuCommand(sku);
+        List<ItemSkuLookupResponse> list = itemUseCaseGet.getAllInSku(getItemsBySkuCommand);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 

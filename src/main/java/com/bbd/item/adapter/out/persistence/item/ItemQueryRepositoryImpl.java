@@ -1,7 +1,7 @@
 package com.bbd.item.adapter.out.persistence.item;
 
 
-import com.bbd.item.adapter.in.web.dto.ItemListSku;
+import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
@@ -109,20 +109,20 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     }
 
     @Override
-    public List<ItemJpaEntity> findAllIntSku(ItemListSku itemListSku) {
+    public List<ItemJpaEntity> findAllIntSku(GetItemsBySkuCommand getItemsBySkuCommand) {
         return jpaQueryFactory
                 .select(itemJpaEntity)
                 .from(itemJpaEntity)
-                .where(itemJpaEntity.sku.in(itemListSku.getSkuList()))
+                .where(itemJpaEntity.sku.in(getItemsBySkuCommand.getSkuList()))
                 .fetch();
     }
 
 
     @Override
-    public List<ItemJpaEntity> getAllInSku(ItemListSku itemListSku) {
+    public List<ItemJpaEntity> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand) {
         return jpaQueryFactory.select(itemJpaEntity)
                 .from(itemJpaEntity)
-                .where(itemJpaEntity.sku.in(itemListSku.getSkuList()))
+                .where(itemJpaEntity.sku.in(getItemsBySkuCommand.getSkuList()))
                 .fetch();
     }
 
