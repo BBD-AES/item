@@ -43,7 +43,6 @@ public class ItemJpaEntity {
     @Column(nullable = false)
     private SourcingType sourcingType;
 
-    // JPA 저장용 생성자
     public ItemJpaEntity(
             String sku,
             String name,

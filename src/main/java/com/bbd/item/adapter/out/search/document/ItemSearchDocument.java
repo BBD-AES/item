@@ -18,11 +18,6 @@ public class ItemSearchDocument {
     @Id
     private String sku;
 
-    /**
-     * name: 일반 text 검색용 메인 필드
-     * name.autocomplete: edge_ngram 색인 + 검색어는 그대로 매칭하는 자동완성 전용 서브 필드
-     * (분석기 정의는 elasticsearch/item-search-settings.json 참고)
-     */
     @MultiField(
             mainField = @Field(type = FieldType.Text),
             otherFields = {
@@ -46,34 +41,4 @@ public class ItemSearchDocument {
         );
     }
 
-//    private static int calculateNameSortGroup(String name) {
-//        if (name == null || name.isBlank()) {
-//            return 3;
-//        }
-//
-//        char first = name.trim().charAt(0);
-//
-//        // 한글 완성형: 가 ~ 힣
-//        if (first >= '가' && first <= '힣') {
-//            return 0;
-//        }
-//
-//        // 한글 자음: ㄱ ~ ㅎ
-//        if (first >= 'ㄱ' && first <= 'ㅎ') {
-//            return 0;
-//        }
-//
-//        // 영문: A-Z, a-z
-//        if ((first >= 'A' && first <= 'Z') || (first >= 'a' && first <= 'z')) {
-//            return 1;
-//        }
-//
-//        // 숫자
-//        if (first >= '0' && first <= '9') {
-//            return 2;
-//        }
-//
-//        // 기타 문자
-//        return 3;
-//    }
 }

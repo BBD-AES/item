@@ -29,10 +29,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-
-    /**
-     * 아이템 조회 쿼리
-     */
     @Override
     public Page<ItemJpaEntity> filterV2(Pageable pageable, GetItemFilterCommand getItemFilterCommand) {
 
@@ -109,16 +105,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     }
 
     @Override
-    public List<ItemJpaEntity> findAllIntSku(GetItemsBySkuCommand getItemsBySkuCommand) {
-        return jpaQueryFactory
-                .select(itemJpaEntity)
-                .from(itemJpaEntity)
-                .where(itemJpaEntity.sku.in(getItemsBySkuCommand.getSkuList()))
-                .fetch();
-    }
-
-
-    @Override
     public List<ItemJpaEntity> getAllInSku(GetItemsBySkuCommand getItemsBySkuCommand) {
         return jpaQueryFactory.select(itemJpaEntity)
                 .from(itemJpaEntity)
@@ -128,9 +114,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
 
     // 이름 동적 쿼리
     private BooleanExpression nameContains(String name) {
-        // return name != null ? itemJpaEntity.name.contains(name) : null;
-        // null 검사를 하려고했지만, 공백이 들어올 위험이 있기 때문에 StringUtil 중에 hasText 즉, 공백이 없는 제대로 된 문자인지 확인
-        // public static boolean hasText(@Nullable String str) { return str != null && !str.isBlank(); } 으로 구현 되어있음
         return StringUtils.hasText(name) ? itemJpaEntity.name.contains(name) : null;
     }
 
@@ -163,12 +146,6 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     // Sort & 방향 꺼내주기
     // OrderSpecifier : Querydsl에서 ORDER BY 조건을 표현하는 클래스
     private OrderSpecifier<?>[] getOrderSpecifiers(Pageable pageable) {
-
-        // 이름이 정렬 기준이라면 item name 이 한글이기 떄문에 한글기준 정렬 설정
-//        StringExpression nameKo = Expressions.stringTemplate(
-//                "{0} COLLATE \"ko-KR-x-icu\"",
-//                itemJpaEntity.name
-//        );
 
         // 1. sort 기준, 방향 꺼내기
         Sort.Order order = pageable.getSort()

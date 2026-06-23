@@ -4,7 +4,6 @@ import com.bbd.item.application.port.out.OutboxEventPort;
 import com.bbd.item.domain.model.outbox.OutboxEvent;
 import com.bbd.item.domain.model.outbox.OutboxStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

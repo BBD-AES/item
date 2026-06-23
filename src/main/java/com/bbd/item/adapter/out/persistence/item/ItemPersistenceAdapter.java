@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * JPAEntity -> Domain 으로 변환
- */
 @Component // 빈으로 등록해야 어댑터도 사용가능
 @RequiredArgsConstructor
 public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkReadPort {

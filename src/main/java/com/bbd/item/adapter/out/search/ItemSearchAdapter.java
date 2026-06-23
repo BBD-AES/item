@@ -44,10 +44,6 @@ public class ItemSearchAdapter implements ItemSearchPort {
 
     @Override
     public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
-        // 엘라스틱서치에서 읽을 수 있는 쿼리 만들기
-        // name 기준으로 autocomplete 필드를 사용하고 keywork 로 탐색
-        // active 즉, 사용 가능한것만 검색
-        // size로 인해 너무 많이 말고 정해진 크기만 조회
         Criteria criteria = Criteria.where("name.autocomplete")
                 .matches(keyword)
                 .and("active")
@@ -64,47 +60,4 @@ public class ItemSearchAdapter implements ItemSearchPort {
                 .toList();
     }
 
-//    @Override
-//    public Page<Item> getFilter(Pageable pageable, GetItemFilterCommand command) {
-//        NativeQuery query = NativeQuery.builder()
-//                .withQuery(q -> q.bool(b -> {
-//                    if (command.getName() != null && !command.getName().isBlank()) {
-//                        b.must(m -> m.match(mm -> mm
-//                                .field("name.ngram")
-//                                .query(command.getName())
-//                        ));
-//                    }
-//
-//                    if (command.getCategory() != null) {
-//                        b.filter(f -> f.term(t -> t
-//                                .field("category")
-//                                .value(command.getCategory().name())
-//                        ));
-//                    }
-//
-//                    if (command.getActive() != null) {
-//                        b.filter(f -> f.term(t -> t
-//                                .field("active")
-//                                .value(command.getActive())
-//                        ));
-//                    }
-//                    return b;
-//                }))
-//                .withPageable(pageable)
-//                .build();
-//
-//        var searchHits = elasticsearchOperations.search(query, ItemSearchDocument.class);
-//
-//        List<Item> content = searchHits.getSearchHits()
-//                .stream()
-//                .map(SearchHit::getContent)
-//                .map(ItemSearchDocument::toDomain)
-//                .toList();
-//
-//        return new PageImpl<>(
-//                content,
-//                pageable,
-//                searchHits.getTotalHits()
-//        );
-//    }
 }

@@ -17,8 +17,6 @@ public interface ItemQueryRepository {
 
     Page<ItemJpaEntity> filterName(Pageable pageable, String name);
 
-    List<ItemJpaEntity> findAllIntSku(GetItemsBySkuCommand getItemsBySkuCommand);
-
     // 아이템 변경 원자처리
     boolean changePrice(UpdatePriceCommand updatePriceCommand);
 

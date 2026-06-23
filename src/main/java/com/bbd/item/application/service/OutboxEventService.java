@@ -3,7 +3,6 @@ package com.bbd.item.application.service;
 import com.bbd.item.adapter.out.persistence.outbox.OutboxEventProcessor;
 import com.bbd.item.application.port.out.OutboxEventPort;
 import com.bbd.item.domain.model.outbox.OutboxEvent;
-import com.bbd.item.domain.model.outbox.OutboxStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

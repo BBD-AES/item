@@ -2,15 +2,12 @@ package com.bbd.item.application.service;
 
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.application.port.in.ItemSearchUseCase;
-import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.out.DistributedLockPort;
 import com.bbd.item.application.port.out.ItemBulkReadPort;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +25,14 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
     private static final String BULK_CREATE_LOCK_KEY = "bulkCreate";
     private static final Duration BULK_CREATE_LOCK_TTL = Duration.ofHours(1);
 
-    private final ItemBulkReadPort itemBulkReadPort;       // RDB에서 Item 읽는 용도
-    private final ItemSearchPort itemSearchPort;           // ES에 saveAll 색인 용도
-    private final DistributedLockPort distributedLockPort; // 동시 재색인 방지용 분산 락
+    private final ItemBulkReadPort itemBulkReadPort;
+    private final ItemSearchPort itemSearchPort;
+    private final DistributedLockPort distributedLockPort;
 
     @Async
     @Override
     public void bulkCreate() {
 
-        // 0. 분산 락 선점: 이미 진행 중인 재색인이 있으면 중복 실행하지 않는다.
-        //    (deleteAll 이 다른 실행의 부분 색인을 지워 인덱스가 비결정적 상태가 되는 것을 방지)
         if (!distributedLockPort.tryLock(BULK_CREATE_LOCK_KEY, BULK_CREATE_LOCK_TTL)) {
             log.warn("bulkCreate 가 이미 진행 중이어서 이번 요청은 건너뜁니다.");
             return;
@@ -87,8 +82,4 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
         return itemSearchPort.autocomplete(keyword, size);
     }
 
-//    @Override
-//    public Page<Item> search(Pageable pageable, GetItemFilterCommand command) {
-//        return itemSearchPort.getFilter(pageable, command);
-//    }
 }

@@ -4,7 +4,6 @@ package com.bbd.item.adapter.out.persistence.item;
 import com.bbd.item.domain.model.item.Item;
 import org.springframework.stereotype.Component;
 
-// Entity -> Domain 으로 매핑
 @Component
 public class ItemPersistenceMapper {
 

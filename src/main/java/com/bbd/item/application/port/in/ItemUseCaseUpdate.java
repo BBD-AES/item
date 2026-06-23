@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface ItemUseCaseUpdate {
 
-    void updateName(UpdateNameCommand updateNameCommand);
-
     void updatePrice(UpdatePriceCommand updatePriceCommand);
 
     void update(UpdateCommand updateCommand);

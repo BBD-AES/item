@@ -24,7 +24,7 @@ public class ItemEventPublisherAdapter implements ItemEventPublisher {
         try {
             kafkaTemplate
                     .send(ITEM_PRICE_CHANGED_TOPIC, event.getPayload())
-                    .get(5, TimeUnit.SECONDS); // 메시지 발행은 최대 5초까지 타임 아웃
+                    .get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error("카프카 메시지 발행에 대해 실패했습니다. {} 입니다.", e.getMessage(), e);
             throw new ApiException(ErrorCode.ITEM_EVENT_NOT_PUBLISH);

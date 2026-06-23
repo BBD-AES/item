@@ -23,8 +23,6 @@ public class ItemServiceCreateImpl implements ItemUseCaseCreate {
 
     @Override
     public void create(CreateItemCommand req) {
-        // TODO : 사용자의 권한에 따라서 생성 못하게 막아야함 (나중에 유저 토큰 들어오면 하자)
-
         // 이미 존재하는지 확인
         if(itemPersistencePort.existBySku(req.getSku())){
             throw new ApiException(ErrorCode.ITEM_SKU_CONFLICT);

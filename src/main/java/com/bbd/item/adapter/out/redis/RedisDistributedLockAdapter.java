@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-/**
- * Redis SETNX(setIfAbsent) 기반 분산 락 어댑터.
- * TTL 을 함께 지정해 락 보유 인스턴스가 비정상 종료되어도 자동 해제되도록 한다.
- */
 @Component
 @RequiredArgsConstructor
 public class RedisDistributedLockAdapter implements DistributedLockPort {
