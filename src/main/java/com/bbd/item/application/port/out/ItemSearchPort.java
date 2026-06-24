@@ -13,6 +13,6 @@ public interface ItemSearchPort {
 
     void deleteAll();
 
-    List<ItemAutocompleteResponse> autocomplete(String keyword, int size);
+    List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active);
 
 }

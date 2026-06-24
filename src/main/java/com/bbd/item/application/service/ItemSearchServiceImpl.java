@@ -78,8 +78,8 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
     }
 
     @Override
-    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
-        return itemSearchPort.autocomplete(keyword, size);
+    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active) {
+        return itemSearchPort.autocomplete(keyword, size, active);
     }
 
 }

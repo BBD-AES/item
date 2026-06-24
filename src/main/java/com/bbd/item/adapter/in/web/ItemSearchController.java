@@ -38,9 +38,10 @@ public class ItemSearchController {
     @GetMapping("/api/v1/items/search/auto")
     public ResponseEntity<List<ItemAutocompleteResponse>> autocomplete(
             @RequestParam String keyword,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "true") boolean active
     ) {
-        return ResponseEntity.ok(itemSearchUseCase.autocomplete(keyword, size));
+        return ResponseEntity.ok(itemSearchUseCase.autocomplete(keyword, size, active));
     }
 
 

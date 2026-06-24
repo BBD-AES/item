@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -43,17 +45,38 @@ public class ItemSearchAdapter implements ItemSearchPort {
     }
 
     @Override
-    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
-        Criteria nameCriteria = Criteria.where("name.autocomplete").matches(keyword);
-        Criteria skuCriteria = Criteria.where("sku.autocomplete").matches(keyword);
+    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active) {
+        String queryJson = """
+            {
+              "bool": {
+                "should": [
+                  {
+                    "match": {
+                      "sku.autocomplete": {
+                        "query": "%s",
+                        "boost": 2.0
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "name.autocomplete": "%s"
+                    }
+                  }
+                ],
+                "minimum_should_match": 1,
+                "filter": [
+                  {
+                    "term": {
+                      "active": %s
+                    }
+                  }
+                ]
+              }
+            }
+            """.formatted(keyword, keyword, active);
 
-        Criteria criteria = new Criteria()
-                .or(nameCriteria)
-                .or(skuCriteria)
-                .and("active")
-                .is(true);
-
-        CriteriaQuery query = new CriteriaQuery(criteria);
+        Query query = new StringQuery(queryJson);
         query.setPageable(PageRequest.of(0, size));
 
         // 쿼리 실행 후 ItemSearchDocument 로 변환하여 리턴

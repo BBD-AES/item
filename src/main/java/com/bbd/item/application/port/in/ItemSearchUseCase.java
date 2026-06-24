@@ -8,6 +8,6 @@ public interface ItemSearchUseCase {
 
     void bulkCreate();
 
-    List<ItemAutocompleteResponse> autocomplete(String keyword, int size);
+    List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active);
 
 }
