@@ -16,6 +16,17 @@ import org.springframework.data.elasticsearch.annotations.*;
 public class ItemSearchDocument {
 
     @Id
+    @MultiField(
+            mainField = @Field(type = FieldType.Keyword),
+            otherFields = {
+                    @InnerField(
+                            suffix = "autocomplete",
+                            type = FieldType.Text,
+                            analyzer = "sku_autocomplete_index",
+                            searchAnalyzer = "sku_autocomplete_search"
+                    )
+            }
+    )
     private String sku;
 
     @MultiField(
