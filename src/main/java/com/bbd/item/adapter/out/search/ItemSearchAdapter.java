@@ -44,10 +44,15 @@ public class ItemSearchAdapter implements ItemSearchPort {
 
     @Override
     public List<ItemAutocompleteResponse> autocomplete(String keyword, int size) {
-        Criteria criteria = Criteria.where("name.autocomplete")
-                .matches(keyword)
+        Criteria nameCriteria = Criteria.where("name.autocomplete").matches(keyword);
+        Criteria skuCriteria = Criteria.where("sku.autocomplete").matches(keyword);
+
+        Criteria criteria = new Criteria()
+                .or(nameCriteria)
+                .or(skuCriteria)
                 .and("active")
                 .is(true);
+
         CriteriaQuery query = new CriteriaQuery(criteria);
         query.setPageable(PageRequest.of(0, size));
 
