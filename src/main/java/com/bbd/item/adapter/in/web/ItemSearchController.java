@@ -2,6 +2,7 @@ package com.bbd.item.adapter.in.web;
 
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.application.port.in.ItemSearchUseCase;
+import com.bbd.item.domain.model.item.SourcingType;
 import com.bbd.securitycore.adapter.in.annotation.RequireRole;
 import com.bbd.securitycore.domain.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,9 +40,11 @@ public class ItemSearchController {
     public ResponseEntity<List<ItemAutocompleteResponse>> autocomplete(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "true") boolean active
+            @RequestParam(defaultValue = "true") boolean active,
+            @RequestParam(required = false) SourcingType sourcingType
+
     ) {
-        return ResponseEntity.ok(itemSearchUseCase.autocomplete(keyword, size, active));
+        return ResponseEntity.ok(itemSearchUseCase.autocomplete(keyword, size, active, sourcingType));
     }
 
 

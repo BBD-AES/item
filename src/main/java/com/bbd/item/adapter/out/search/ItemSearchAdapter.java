@@ -5,11 +5,10 @@ import com.bbd.item.adapter.out.search.document.ItemSearchDocument;
 import com.bbd.item.adapter.out.search.repository.ItemSearchRepository;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,18 @@ public class ItemSearchAdapter implements ItemSearchPort {
     }
 
     @Override
-    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active) {
+    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active, SourcingType sourcingType) {
+        String sourcingTypeFilter = sourcingType == null
+                ? ""
+                : """
+                  ,
+                  {
+                    "term": {
+                      "sourcingType": "%s"
+                    }
+                  }
+                  """.formatted(sourcingType.name());
+
         String queryJson = """
             {
               "bool": {
@@ -71,10 +81,11 @@ public class ItemSearchAdapter implements ItemSearchPort {
                       "active": %s
                     }
                   }
+                  %s
                 ]
               }
             }
-            """.formatted(keyword, keyword, active);
+            """.formatted(keyword, keyword, active, sourcingTypeFilter);
 
         Query query = new StringQuery(queryJson);
         query.setPageable(PageRequest.of(0, size));

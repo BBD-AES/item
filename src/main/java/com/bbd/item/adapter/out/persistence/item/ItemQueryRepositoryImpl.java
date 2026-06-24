@@ -5,6 +5,7 @@ import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.GetItemFilterCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
+import com.bbd.item.domain.model.item.SourcingType;
 import com.bbd.item.domain.model.item.Unit;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -39,7 +40,8 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
                 .where(
                         categoryEq(getItemFilterCommand.getCategory()),
                         nameContains(getItemFilterCommand.getName()),
-                        activeEq(getItemFilterCommand.getActive())
+                        activeEq(getItemFilterCommand.getActive()),
+                        sourcingTypeEq(getItemFilterCommand.getSourcingType())
                 )
                 .orderBy(getOrderSpecifiers(pageable))
                 .offset(pageable.getOffset())
@@ -125,6 +127,11 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     // 활동 상태 필터
     private BooleanExpression activeEq(Boolean active) {
         return active != null ? itemJpaEntity.active.eq(active) : null;
+    }
+
+    // 아이템 소싱 타입
+    private BooleanExpression sourcingTypeEq(SourcingType sourcingType) {
+        return sourcingType != null ? itemJpaEntity.sourcingType.eq(sourcingType) : null;
     }
 
     // 단품, 세트 필터

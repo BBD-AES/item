@@ -11,6 +11,7 @@ import com.bbd.item.application.port.in.dto.GetItemsBySkuCommand;
 import com.bbd.item.application.port.in.dto.UpdatePriceCommand;
 import com.bbd.item.domain.model.item.Category;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
 import com.bbd.securitycore.adapter.in.annotation.RequireRole;
 import com.bbd.securitycore.domain.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,7 +116,7 @@ public class ItemController {
 
     @RequireRole({UserRole.HQ_MANAGER, UserRole.HQ_STAFF, UserRole.ADMIN,
             UserRole.BRANCH_MANAGER, UserRole.BRANCH_STAFF})
-    @Operation(summary = "필터 조회API (category & name & active 필터), (정렬은 이름 & sku 만 가능)")
+    @Operation(summary = "필터 조회API (category & name & active 필터 & ), (정렬은 이름 & sku 만 가능)")
     @GetMapping("/api/v1/items/filter")
     public ResponseEntity<PageResponse> getItemsFilterV2(
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -124,11 +125,12 @@ public class ItemController {
             @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Category category,
-            @RequestParam(required = false) Boolean active
-    ) {
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) SourcingType sourcingType
+            ) {
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active);
+        GetItemFilterCommand getItemFilterCommand = new GetItemFilterCommand(name, category, active, sourcingType);
         Page<ItemResponse> map = itemUseCaseGet.getFilterV2(pageable, getItemFilterCommand).map(item -> new ItemResponse(item));
         PageResponse pageResponse = PageResponse.from(map);
         return ResponseEntity.status(HttpStatus.OK).body(pageResponse);

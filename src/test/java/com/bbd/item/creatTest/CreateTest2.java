@@ -51,7 +51,7 @@ public class CreateTest2 {
         Thread.sleep(1000);
 
         // then
-        List<ItemAutocompleteResponse> result = itemSearchUseCase.autocomplete("테스트", 5, true);
+        List<ItemAutocompleteResponse> result = itemSearchUseCase.autocomplete("테스트", 5, true,  SourcingType.BUY);
 
         Assertions.assertTrue(
                 result.stream().anyMatch(response -> response.getSku().equals(sku))

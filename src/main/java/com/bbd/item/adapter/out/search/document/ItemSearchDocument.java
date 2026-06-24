@@ -1,6 +1,7 @@
 package com.bbd.item.adapter.out.search.document;
 
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,11 +45,15 @@ public class ItemSearchDocument {
 
     private boolean active;
 
+    @Field(type = FieldType.Keyword)
+    private SourcingType sourcingType;
+
     public static ItemSearchDocument from(Item item) {
         return new ItemSearchDocument(
                 item.getSku(),
                 item.getName(),
-                item.isActive()
+                item.isActive(),
+                item.getSourcingType()
         );
     }
 

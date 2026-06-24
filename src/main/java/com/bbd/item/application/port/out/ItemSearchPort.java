@@ -2,6 +2,7 @@ package com.bbd.item.application.port.out;
 
 import com.bbd.item.adapter.in.web.dto.ItemAutocompleteResponse;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface ItemSearchPort {
 
     void deleteAll();
 
-    List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active);
+    List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active, SourcingType sourcingType);
 
 }

@@ -6,6 +6,7 @@ import com.bbd.item.application.port.out.DistributedLockPort;
 import com.bbd.item.application.port.out.ItemBulkReadPort;
 import com.bbd.item.application.port.out.ItemSearchPort;
 import com.bbd.item.domain.model.item.Item;
+import com.bbd.item.domain.model.item.SourcingType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -73,13 +74,14 @@ public class ItemSearchServiceImpl implements ItemSearchUseCase {
 
         } finally {
             // 5. 작업 종료(성공/실패 무관) 시 락 해제
+            log.info("벌크 크리에이트 종료");
             distributedLockPort.unlock(BULK_CREATE_LOCK_KEY);
         }
     }
 
     @Override
-    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active) {
-        return itemSearchPort.autocomplete(keyword, size, active);
+    public List<ItemAutocompleteResponse> autocomplete(String keyword, int size, boolean active, SourcingType sourcingType) {
+        return itemSearchPort.autocomplete(keyword, size, active, sourcingType);
     }
 
 }

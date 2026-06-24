@@ -60,7 +60,7 @@ public class ItemPersistenceAdapter implements ItemPersistencePort, ItemBulkRead
 
 
         // 1. 기본 목록 조회 -> Native Query WITH 사용하기
-        if (getItemFilterCommand.getActive() == null && getItemFilterCommand.getCategory() == null && getItemFilterCommand.getName() == null) {
+        if (getItemFilterCommand.getActive() == null && getItemFilterCommand.getCategory() == null && getItemFilterCommand.getName() == null && getItemFilterCommand.getSourcingType() == null) {
             return itemJpaRepository.getNative(pageable)
                     .map(itemJpaEntity -> itemPersistenceMapper.toDomain(itemJpaEntity));
         }
