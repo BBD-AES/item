@@ -10,6 +10,16 @@
         "type": "custom",
         "tokenizer": "standard",
         "filter": ["lowercase"]
+      },
+      "sku_autocomplete_index": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": ["lowercase", "edge_ngram_filter"]
+      },
+      "sku_autocomplete_search": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": ["lowercase"]
       }
     },
     "filter": {
